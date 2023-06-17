@@ -1,15 +1,13 @@
 import React from "react";
 
-export default function MenuItem({ title, desc }) {
+export default function MenuItem({ title, desc, image_url }) {
   return (
     <div className="border border-gray-300 m-2 w-1/5 rounded-md flex flex-col justify-between items-center pb-4 shadow-md">
       <section>
         <div className="overflow-hidden">
           <img
-            src={
-              "https://static.phdvasia.com/sg1/menu/single/desktop_thumbnail_1f633a30-ba93-450a-a93d-1ac3b25a1b54.jpg"
-            }
-            className="object-contain hover:scale-110"
+            src={image_url}
+            className="object-contain hover:scale-110 transition-all"
           />
         </div>
         <div className="p-4">
