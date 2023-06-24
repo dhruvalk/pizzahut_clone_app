@@ -17,10 +17,10 @@ export default function Navbar() {
           <Link to="/order">Order</Link>
         </div>
         <div className="px-6 cursor-pointer hover:underline">
-          <Link to="">Login</Link>
+          <Link to="/login">Login</Link>
         </div>
         <div className="px-6 cursor-pointer hover:underline">
-          <Link to="">Register</Link>
+          <Link to="/register">Register</Link>
         </div>
         <div className="px-6 cursor-pointer hover:underline">
           <Link to="">Track</Link>

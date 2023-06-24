@@ -1,0 +1,8 @@
+svg:hover {
+  color: red;
+  fill: red;
+}
+
+.test:hover {
+  fill: red;
+}
