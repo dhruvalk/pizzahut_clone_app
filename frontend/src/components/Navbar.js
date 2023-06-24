@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 export default function Navbar() {
   const navigate = useNavigate();
   return (
-    <navbar className="flex flex-row justify-between px-6 py-4">
+    <div className="flex flex-row justify-between px-6 py-4" id="navbar">
       <span>
         <img
           src="https://static.phdvasia.com/sg1/assets/images/logos/logo_mob@x2_A.png"
@@ -26,6 +26,6 @@ export default function Navbar() {
           <Link to="">Track</Link>
         </div>
       </span>
-    </navbar>
+    </div>
   );
 }

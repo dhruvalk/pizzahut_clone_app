@@ -245,3 +245,50 @@ class CartController( private val cartService: CartService){
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun removeCartByUser(@PathVariable("userId") userId: Int) = cartService.removeCartByUser(userId)
 }
+
+@RestController
+class AddressController(private val addressService: AddressService) {
+    @GetMapping("/address/all")
+    fun getAllAddress() = addressService.getAddress()
+
+    @GetMapping("/address/{userId}/all")
+    fun getAddressByUser(@PathVariable("userId") userId: Int): List<Address>{
+        return addressService.getAddress().filter { it.userId == userId }
+    }
+
+    @PatchMapping("/address/update")
+    // update an order
+    fun updateAddress(@RequestBody address: Address):Address{
+        if(addressService.getAddress().any{it.userId == address.userId && it.addressId == address.addressId}){
+            addressService.updateAddress(address)
+        }
+        else{
+            throw IllegalArgumentException("User or existing address doesnt even exist")
+        }
+        return address
+    }
+
+    @DeleteMapping("address/{userId}/{addressId}/delete")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    // delete an order
+    fun deleteAddress(@PathVariable("addressId") addressId: Int,@PathVariable("userId") userId: Int){
+        if(addressService.getAddress().any{userId == it.userId && addressId == it.addressId}){
+            addressService.deleteAddress(addressId, userId)
+        }
+        else{
+            throw IllegalArgumentException("User and address id doesnt exist")
+        }
+    }
+
+    @PostMapping("/address/create")
+    @ResponseStatus(HttpStatus.CREATED)
+    // add an item to order
+    fun addNewAddress(@RequestBody address: Address): Address {
+        if(addressService.getAddress().any{it.userId == address.userId && it.addressId == address.addressId}){
+            throw IllegalArgumentException("that address id already exists for that user")
+        }
+        addressService.addAddress(address)
+        return address
+    }
+
+}
