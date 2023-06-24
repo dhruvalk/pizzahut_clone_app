@@ -1,10 +1,8 @@
 package com.pizzahut.resourceserver.controller
 
+import com.pizzahut.resourceserver.datasource.mock.MockFoodItemDataSource
 import com.pizzahut.resourceserver.model.*
-import com.pizzahut.resourceserver.service.MenuService
-import com.pizzahut.resourceserver.service.OrderService
-import com.pizzahut.resourceserver.service.PriceService
-import com.pizzahut.resourceserver.service.UserService
+import com.pizzahut.resourceserver.service.*
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.context.annotation.ComponentScan
@@ -33,7 +31,7 @@ fun main(args: Array<String>) {
 }
 
 @RestController
-class MenuController(private val menuService: MenuService, private val orderService: OrderService) {
+class MenuController(private val menuService: MenuService, private val orderService: OrderService, private val priceService: PriceService) {
     @ExceptionHandler(NoSuchElementException::class)
     fun handleNotFound(e:NoSuchElementException): ResponseEntity<String> = ResponseEntity(e.message, HttpStatus.NOT_FOUND)
     @ExceptionHandler(IllegalArgumentException::class)
@@ -46,19 +44,22 @@ class MenuController(private val menuService: MenuService, private val orderServ
     fun getMenuItem(@PathVariable("id") id: Int) = menuService.getMenu().filter { it.itemID == id }
 
 
-    @PostMapping("/menu/add")
+    @PostMapping("/menu/create")
     @ResponseStatus(HttpStatus.CREATED)
     fun addMenuItem(@RequestBody foodItem: FoodItem): FoodItem  = menuService.addMenuItem(foodItem)
 
     @PatchMapping("/menu")
     fun updateMenuItem(@RequestBody foodItem: FoodItem): FoodItem = menuService.updateMenuItem(foodItem)
 
-    @DeleteMapping("/menu/{id}")
+    @DeleteMapping("/menu/{id}/delete")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    fun deleteMenuItem(@PathVariable("id") id: Int): Unit = menuService.deleteMenuItem(id)
+    fun deleteMenuItem(@PathVariable("id") id: Int): Unit {
+        menuService.deleteMenuItem(id)
+        priceService.deleteMenuItemPriceById(id)
+    }
 
     @GetMapping("/menu")
-    fun getMenuItemsFromTags(@RequestParam("tags") tags: List<String>): List<FoodItem> = menuService.getMenuItemFromTags(tags)
+    fun getMenuItemsFromTags(@RequestParam("tags") tags: String): List<FoodItem> = menuService.getMenuItemFromTags(tags)
 }
 
 
@@ -73,16 +74,16 @@ class PriceController(private val priceService: PriceService){
     @GetMapping("/price/all")
     fun getPrices() = priceService.getPrices()
     @GetMapping("/price")
-    fun getMenuItemPrice(@RequestParam("id") itemId: Int, @RequestParam("type") type:Type): Double = priceService.getMenuItemPrice(itemId,type)
+    fun getMenuItemPrice(@RequestParam("itemId") itemId: Int, @RequestParam("type") type:Type): Double = priceService.getMenuItemPrice(itemId,type)
 
-    @PostMapping("/price/add")
+    @PostMapping("/price/create")
     @ResponseStatus(HttpStatus.CREATED)
     fun addMenuItemPrice(@RequestBody price: Price): Price = priceService.addMenuItemPrice(price)
 
-    @PatchMapping("/price")
+    @PatchMapping("/price/update")
     fun updateMenuItemPrice(@RequestBody price: Price): Price = priceService.updateMenuItemPrice(price)
 
-    @DeleteMapping("/price/{id}/{type}")
+    @DeleteMapping("/price/{id}/{type}/delete")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun deleteMenuItemPrice(@PathVariable("id") itemId: Int, @PathVariable("type") type: Type): Unit = priceService.deleteMenuItemPrice(itemId,type)
 
@@ -98,15 +99,15 @@ class OrdersController(private val orderService: OrderService) {
     // get all order items from orderItems table
     fun getAllOrderItems() = orderService.getOrderItems()
 
-    @GetMapping("/orders")
+    @GetMapping("/orders/{userId}/all")
     // get all orders for specified user
-    fun getAllOrdersByUser(@RequestParam("userId") userId: Int) = orderService.getOrders().filter { order -> order.userId == userId }
+    fun getAllOrdersByUser(@PathVariable("userId") userId: Int) = orderService.getOrders().filter { order -> order.userId == userId }
 
-    @GetMapping("/orderItems")
+    @GetMapping("/orderItems/{orderId}/all")
     // get all the items in the order for given orderId
-    fun getAllOrderItemsByOrder(@RequestParam("orderId") orderId: Int) = orderService.getOrderItems().filter { order -> (order.orderId==orderId) }
+    fun getAllOrderItemsByOrder(@PathVariable("orderId") orderId: Int) = orderService.getOrderItems().filter { order -> (order.orderId==orderId) }
 
-    @PostMapping("/orders/add")
+    @PostMapping("/orders/create")
     @ResponseStatus(HttpStatus.CREATED)
     /// create a new order
     fun addNewOrder(@RequestBody order: Order): Order {
@@ -114,7 +115,7 @@ class OrdersController(private val orderService: OrderService) {
         return order
     }
 
-    @PostMapping("/orderItems/add")
+    @PostMapping("/orderItems/create")
     @ResponseStatus(HttpStatus.CREATED)
     // add an item to order
     fun addNewOrderItem(@RequestBody orderItem: OrderItem): OrderItem {
@@ -125,8 +126,7 @@ class OrdersController(private val orderService: OrderService) {
         return orderItem
     }
 
-    @PutMapping("/orderItems/update")
-    @ResponseStatus(HttpStatus.ACCEPTED)
+    @PatchMapping("/orderItems/update")
     // update an item in the order
     fun updateOrderItem(@RequestBody orderItem: OrderItem):OrderItem{
         if(orderService.getOrderItems().any{it.itemId == orderItem.itemId && it.orderId == orderItem.orderId}){
@@ -138,8 +138,7 @@ class OrdersController(private val orderService: OrderService) {
         return orderItem
     }
 
-    @PutMapping("/orders/update")
-    @ResponseStatus(HttpStatus.ACCEPTED)
+    @PatchMapping("/orders/update")
     // update an order
     fun updateOrder(@RequestBody order: Order):Order{
         if(orderService.getOrders().any{it.orderId == order.orderId}){
@@ -151,10 +150,10 @@ class OrdersController(private val orderService: OrderService) {
         return order
     }
 
-    @DeleteMapping("orders/delete")
-    @ResponseStatus(HttpStatus.ACCEPTED)
+    @DeleteMapping("orders/{orderId}/delete")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     // delete an order
-    fun deleteOrder(@RequestParam("orderId") orderId: Int){
+    fun deleteOrder(@PathVariable("orderId") orderId: Int){
         if(orderService.getOrders().any{orderId == it.orderId}){
             orderService.deleteOrder(orderId)
         }
@@ -163,10 +162,10 @@ class OrdersController(private val orderService: OrderService) {
         }
     }
 
-    @DeleteMapping("orderItems/delete")
-    @ResponseStatus(HttpStatus.ACCEPTED)
+    @DeleteMapping("orderItems/{orderId}/{itemId}/delete")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     // delete an order
-    fun deleteOrderItem(@RequestParam("orderId") orderId: Int, @RequestParam("itemId") itemId: Int){
+    fun deleteOrderItem(@PathVariable("orderId") orderId: Int, @PathVariable("itemId") itemId: Int){
         if(orderService.getOrderItems().any{orderId == it.orderId && itemId == it.itemId}){
             orderService.deleteOrderItem(orderId, itemId)
         }
@@ -180,13 +179,12 @@ class OrdersController(private val orderService: OrderService) {
         @GetMapping("/users/all")
         fun getAllUsers() = userService.getUsers()
 
-        @GetMapping("/users")
-        fun getUserInfo(@RequestParam("userId") userId: Int): List<User>{
+        @GetMapping("/users/{userId}")
+        fun getUserInfo(@PathVariable("userId") userId: Int): List<User>{
             return userService.getUsers().filter { it.userId == userId }
         }
 
-        @PutMapping("/users/update")
-        @ResponseStatus(HttpStatus.ACCEPTED)
+        @PatchMapping("/users/update")
         // update an order
         fun updateUser(@RequestBody user: User):User{
             if(userService.getUsers().any{it.userId == user.userId}){
@@ -198,10 +196,10 @@ class OrdersController(private val orderService: OrderService) {
             return user
         }
 
-        @DeleteMapping("users/delete")
-        @ResponseStatus(HttpStatus.ACCEPTED)
+        @DeleteMapping("users/{userId}/delete")
+        @ResponseStatus(HttpStatus.NO_CONTENT)
         // delete an order
-        fun deleteUser(@RequestParam("userId") userId: Int){
+        fun deleteUser(@PathVariable("userId") userId: Int){
             if(userService.getUsers().any{userId == it.userId}){
                 userService.deleteUser(userId)
             }
@@ -210,7 +208,7 @@ class OrdersController(private val orderService: OrderService) {
             }
         }
 
-        @PostMapping("/users/add")
+        @PostMapping("/users/create")
         @ResponseStatus(HttpStatus.CREATED)
         // add an item to order
         fun addNewUser(@RequestBody user: User): User {
@@ -223,4 +221,27 @@ class OrdersController(private val orderService: OrderService) {
 
     }
 
+}
+
+@RestController
+class CartController( private val cartService: CartService){
+    @ExceptionHandler(NoSuchElementException::class)
+    fun handleNotFound(e:NoSuchElementException): ResponseEntity<String> = ResponseEntity(e.message, HttpStatus.NOT_FOUND)
+    @ExceptionHandler(IllegalArgumentException::class)
+    fun handleBadRequest(e: IllegalArgumentException): ResponseEntity<String> = ResponseEntity(e.message, HttpStatus.BAD_REQUEST)
+
+    @GetMapping("/cart/{userId}")
+    fun getCartByUser(@PathVariable("userId") userId: Int) : Cart = cartService.getCartByUser(userId)
+
+    @PatchMapping("/cart/{userId}/addItem")
+    fun addItemToCart(@PathVariable userId: Int, @RequestBody item: OrderItem) : Cart = cartService.addItemToCart(userId, item)
+
+    @PatchMapping("/cart/{userId}/{itemId}/removeItem")
+    fun removeItemFromCart(@PathVariable userId: Int, @PathVariable itemId: Int): Cart {
+        return cartService.removeItemFromCart(userId, itemId)
+    }
+
+    @DeleteMapping("/cart/{userId}/delete")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    fun removeCartByUser(@PathVariable("userId") userId: Int) = cartService.removeCartByUser(userId)
 }

@@ -36,15 +36,11 @@ class MockFoodItemDataSource {
         val currentFoodItem = items.firstOrNull{ it.itemID == id} ?: throw NoSuchElementException("Could not find a menu item with item id $id")
         items.remove(currentFoodItem)
 
-        // if want to ensure consistency
-//        val mockPriceDataSource = MockPriceDataSource()
-//        mockPriceDataSource.deleteMenuItemPriceById(id)
-
     }
 
-    fun getMenuItemFromTags(tags: List<String>) : List<FoodItem>{
+    fun getMenuItemFromTags(tags: String) : List<FoodItem>{
         return items.filter{ item ->
-            tags.all { tag -> item.tags.contains(tag)}
+            tags.split(",").all { tag -> item.tags.contains(tag)}
         }
     }
 
@@ -53,7 +49,7 @@ class MockFoodItemDataSource {
 @Repository
 class MockPriceDataSource {
 
-    private val prices = mutableListOf<Price>(
+    private var prices = mutableListOf<Price>(
         Price(1,Type.`Personal Pan`,10.55),
         Price(2,Type.`Large Pan` ,18.55),
         Price(3,Type.`Regular Pan`,12.00),
@@ -88,12 +84,12 @@ class MockPriceDataSource {
         prices.remove(currMenuItemPrice)
     }
 
-    // if want to ensure consistency
-//    fun deleteMenuItemPriceById(itemId: Int){
-//        val currMenuItemPrices = prices.filter{it.itemId == itemId }
-//        if (currMenuItemPrices.isEmpty()){
-//            throw NoSuchElementException("Could not find any menu items with item id ${itemId}}")
-//        }
-//        prices.removeAll(currMenuItemPrices)
-//    }
+
+    fun deleteMenuItemPriceById(itemId: Int){
+        val currMenuItemPrices = prices.filter{it.itemId == itemId }
+        if (currMenuItemPrices.isNotEmpty()){
+            prices.removeAll(currMenuItemPrices)
+        }
+
+    }
 }

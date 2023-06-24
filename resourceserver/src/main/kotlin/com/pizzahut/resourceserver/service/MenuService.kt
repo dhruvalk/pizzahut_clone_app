@@ -17,7 +17,7 @@ class MenuService(private val dataSource: MockFoodItemDataSource) {
 
     fun deleteMenuItem(id: Int) = dataSource.deleteMenuItem(id)
 
-    fun getMenuItemFromTags(tags: List<String>) : List<FoodItem> = dataSource.getMenuItemFromTags(tags)
+    fun getMenuItemFromTags(tags: String) : List<FoodItem> = dataSource.getMenuItemFromTags(tags)
 }
 
 @Service
@@ -27,5 +27,6 @@ class PriceService(private val dataSource: MockPriceDataSource){
     fun getPrices() = dataSource.getPrices()
     fun updateMenuItemPrice(price: Price): Price = dataSource.updateMenuItemPrice(price)
     fun deleteMenuItemPrice(itemId: Int, type: Type) = dataSource.deleteMenuItemPrice(itemId,type)
+    fun deleteMenuItemPriceById(itemId: Int) = dataSource.deleteMenuItemPriceById(itemId)
 
 }
