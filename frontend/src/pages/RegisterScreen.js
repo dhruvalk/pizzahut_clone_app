@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { ReactComponent as FBIcon } from "../assets/FBIcon.svg";
-import { ReactComponent as GoogleIcon } from "../assets/GoogleIcon.svg";
+import { ImGoogle3 } from "react-icons/im";
+import { FaFacebook } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 export default function Register() {
   const [firstName, setFirstName] = useState("");
@@ -11,11 +13,8 @@ export default function Register() {
   const [pass1, setPass1] = useState("");
   const [pass2, setPass2] = useState("");
   const [gender, setGender] = useState("");
-  const [birthday, setBirthday] = useState("");
+  const [birthday, setBirthday] = useState(new Date());
 
-  const days = Array.from({ length: 31 }, (_, index) => index + 1);
-  const months = Array.from({ length: 12 }, (_, index) => index + 1);
-  const years = Array.from({ length: 100 }, (_, index) => 2023 - index);
   const [isChecked, setIsChecked] = useState(false);
   const [isCheckedPrivacy, setIsCheckedPrivacy] = useState(false);
   const handleCheckboxChange = (event) => {
@@ -41,7 +40,10 @@ export default function Register() {
     <div className="flex flex-col items-center justify-center space-y-4 w-3/4 md:w-1/2 h-screen m-auto">
       <div className="font-bold text-5xl text-left"> Create Account</div>
       <div className="text-left">
-        Already have an account? <Link to="/login">Sign In</Link>
+        Already have an account?{" "}
+        <Link to="/login" className="italic text-blue-500 underline">
+          Sign In
+        </Link>
       </div>
       <form className="flex flex-col space-y-4 w-full" onSubmit={handleSubmit}>
         <input
@@ -52,6 +54,7 @@ export default function Register() {
           id="firstName"
           name="firstName"
           placeholder="First Name"
+          required
         />
         <input
           value={lastName}
@@ -61,6 +64,7 @@ export default function Register() {
           id="lastName"
           name="lastName"
           placeholder="Last Name"
+          required
         />
         <input
           value={email}
@@ -70,6 +74,7 @@ export default function Register() {
           id="email"
           name="email"
           placeholder="Email"
+          required
         />
         <input
           value={phone}
@@ -79,24 +84,27 @@ export default function Register() {
           id="phone"
           name="phone"
           placeholder="Phone Number"
+          required
         />
         <input
           value={pass1}
           onChange={(e) => setPass1(e.target.value)}
           className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-500"
-          type="text"
+          type="password"
           id="password1"
           name="password1"
           placeholder="Password"
+          required
         />
         <input
           value={pass2}
           onChange={(e) => setPass2(e.target.value)}
           className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-500"
-          type="text"
+          type="password"
           id="password2"
           name="password2"
           placeholder="Retype Password"
+          required
         />
         <label className="flex items-center">
           Gender:
@@ -105,44 +113,20 @@ export default function Register() {
             onChange={(e) => setGender(e.target.value)}
             name="gender"
             className="ml-5 text-center px-4 py-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-500 mt-2"
+            type="text"
           >
             <option>Male</option>
             <option>Female</option>
           </select>
         </label>
-        <label className="flex flex-row space-x-2 items-center w-full ">
+        <label className="flex flex-row space-x-4 items-center w-full ">
           Birthday:
-          <div className=" flex flex-row space-x-2 ">
-            {/* Day Selection */}
-            <select className="ml-5 p-2 border border-gray-300 rounded-md">
-              <option value="" disabled selected>
-                Day
-              </option>
-              {days.map((day) => (
-                <option key={day}>{day}</option>
-              ))}
-            </select>
-
-            {/* Month Selection */}
-            <select className="p-2 border border-gray-300 rounded-md">
-              <option value="" disabled selected>
-                Month
-              </option>
-              {months.map((month) => (
-                <option key={month}>{month}</option>
-              ))}
-            </select>
-
-            {/* Year Selection */}
-            <select className="p-2 border border-gray-300 rounded-md">
-              <option value="" disabled selected>
-                Year
-              </option>
-              {years.map((year) => (
-                <option key={year}>{year}</option>
-              ))}
-            </select>
-          </div>
+          <DatePicker
+            selected={birthday}
+            type="date"
+            onChange={(date) => setBirthday(date)}
+            className="ml-4 text-center py-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-500"
+          />
         </label>
         <div className="flex flex-row items-center justify-center w-full">
           <input
@@ -150,6 +134,7 @@ export default function Register() {
             checked={isCheckedPrivacy}
             onChange={handlePrivacyCheckboxChange}
             className="mr-2"
+            required
           />
           <div className="w-full">
             I agree to the Privacy Policy and understand that my information
@@ -179,11 +164,8 @@ export default function Register() {
       </form>
       <div className="text-center">or you can sign in with</div>
       <div className="flex flex-row w-full items-center justify-center space-x-2">
-        <FBIcon
-          style={{ width: "42px", height: "42px", transition: "fill 0.3s" }}
-          className="test"
-        />
-        <GoogleIcon style={{ width: "42px", height: "42px" }} />
+        <FaFacebook style={{ width: "42px", height: "42px", color: "gray" }} />
+        <ImGoogle3 style={{ width: "42px", height: "42px", color: "gray" }} />
       </div>
     </div>
   );

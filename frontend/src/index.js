@@ -6,8 +6,9 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import OrderScreen from "./pages/OrderScreen";
 import Layout from "./pages/Layout";
 import HomeScreen from "./pages/HomeScreen";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
+import Login from "./pages/LoginScreen";
+import Register from "./pages/RegisterScreen";
+import ForgetPasswordScreen from "./pages/ForgetPasswordScreen";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -19,6 +20,10 @@ root.render(
           <Route path="/order" element={<OrderScreen />}></Route>
           <Route path="/login" element={<Login />}></Route>
           <Route path="/register" element={<Register />}></Route>
+          <Route
+            path="/getmypassword"
+            element={<ForgetPasswordScreen />}
+          ></Route>
         </Route>
       </Routes>
     </BrowserRouter>
