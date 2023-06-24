@@ -8,6 +8,7 @@ export default function HomeScreen() {
     <div className="h-full w-full">
       <div className="w-full text-center h-1/3 mt-[50px]">
         <img
+          alt="banner"
           className="object-cover h-[350px]"
           src="https://static.phdvasia.com/sg1/banners/phdv-1686763208184-PH_Hut-Melts%2723_FCDS_Homepage-Header_Desktop_1843x400_FAp-01.jpg"
         />
