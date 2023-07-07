@@ -4,6 +4,7 @@ import { FaFacebook } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { handleSignUp } from "../APIUtils";
 
 export default function Register() {
   const [firstName, setFirstName] = useState("");
@@ -26,15 +27,16 @@ export default function Register() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(email, pass1, firstName, lastName, phone, gender, pass2);
+    handleSignUp(0, firstName, lastName, email, "mock", pass1, phone, birthday);
+    // console.log(email, pass1, firstName, lastName, phone, gender, pass2);
   };
 
-  useEffect(() => {
-    fetch("/menu/all")
-      .then((response) => response.json())
-      .then((data) => console.log(data))
-      .catch((e) => console.log(e));
-  }, []);
+  // useEffect(() => {
+  //   fetch("/menu/all")
+  //     .then((response) => response.json())
+  //     .then((data) => console.log(data))
+  //     .catch((e) => console.log(e));
+  // }, []);
 
   return (
     <div className="flex flex-col items-center justify-center space-y-4 w-3/4 md:w-1/2 h-screen m-auto">

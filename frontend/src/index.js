@@ -9,6 +9,7 @@ import HomeScreen from "./pages/HomeScreen";
 import Login from "./pages/LoginScreen";
 import Register from "./pages/RegisterScreen";
 import ForgetPasswordScreen from "./pages/ForgetPasswordScreen";
+import AccountScreen from "./pages/AccountScreen";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -24,6 +25,7 @@ root.render(
             path="/getmypassword"
             element={<ForgetPasswordScreen />}
           ></Route>
+          <Route path="/profile" element={<AccountScreen />}></Route>
         </Route>
       </Routes>
     </BrowserRouter>
