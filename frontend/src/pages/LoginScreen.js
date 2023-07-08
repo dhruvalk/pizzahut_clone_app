@@ -1,17 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { ImGoogle3 } from "react-icons/im";
 import { FaFacebook } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { handleLogIn } from "../APIUtils";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
+  const navigate = useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault();
     const response = await handleLogIn(email, pass);
     if (response.token) {
       localStorage.setItem("token", response.token);
+      navigate("/order");
+      navigate(0);
     }
   };
 

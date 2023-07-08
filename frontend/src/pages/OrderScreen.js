@@ -1,11 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import data from "../mockFoodData.json";
 import MenuItem from "../components/MenuItem";
 import MenuNavBar from "../components/MenuNavBar";
 import CartSideBar from "../components/CartSideBar";
+import { getAllMenu } from "../APIUtils";
 
 export default function OrderScreen() {
   const [orderData, setOrderData] = useState([]);
+
+  useEffect(() => {
+    getAllMenu();
+  }, []);
 
   function addToOrder(title, type, price) {
     const exists = orderData.filter(
@@ -31,18 +36,31 @@ export default function OrderScreen() {
     }
   }
 
+  const transformedArray = [];
+  data.forEach((obj) => {
+    const existingItem = transformedArray.find(
+      (item) => item.title === obj.title
+    );
+    if (existingItem) {
+      existingItem.types.push(obj.type);
+    } else {
+      transformedArray.push({ ...obj, types: [obj.type] });
+    }
+  });
+
   return (
     <div className="flex w-full relative">
       <div className="w-3/4">
         <MenuNavBar />
         <div className="w-full flex flex-wrap justify-center">
-          {data.map((val) => (
+          {transformedArray.map((val) => (
             <MenuItem
               title={val.title}
               desc={val.description}
-              image_url={val.image_url}
+              image_url={val.photo}
               onClick={addToOrder}
-              key={val.title}
+              key={val.itemId}
+              types={val.types}
             />
           ))}
         </div>

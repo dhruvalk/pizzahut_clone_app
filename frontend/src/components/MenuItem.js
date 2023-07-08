@@ -1,6 +1,12 @@
 import React, { useState } from "react";
 
-export default function MenuItem({ title, desc, image_url, onClick }) {
+export default function MenuItem({
+  title,
+  desc,
+  image_url,
+  onClick,
+  types = [],
+}) {
   function onClickHandler() {
     onClick(title, type, 28.88);
   }
@@ -31,14 +37,16 @@ export default function MenuItem({ title, desc, image_url, onClick }) {
           value={type}
           onChange={(e) => setType(e.target.value)}
         >
-          <option value="Large personal pan">Large personal pan</option>
-          <option value="Regular personal pan">Regular personal pan</option>
+          {types.map((type) => (
+            <option value={type}>{type}</option>
+          ))}
         </select>
         <button
-          className="w-full bg-green rounded-lg py-1 font-semibold text-white text-sm mt-6"
+          className="w-full bg-green rounded-lg py-1 font-semibold text-white text-sm mt-6 flex justify-between items-center px-3"
           onClick={onClickHandler}
         >
-          Add
+          <div>Add</div>
+          <div>28.88</div>
         </button>
       </section>
     </div>
