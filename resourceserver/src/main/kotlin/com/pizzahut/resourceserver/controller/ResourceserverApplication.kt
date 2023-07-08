@@ -184,7 +184,7 @@ class OrdersController(private val orderService: OrderService) {
             return userService.getUsers().filter { it.userId == userId }
         }
 
-        @GetMapping("/users/login")
+        @PostMapping("/users/login")
         fun checkAndLoginUser(@RequestBody email:String, @RequestBody password:String): String {
             val filteredUser = userService.getUsers().filter { it.email == email && it.password == password }
             if(filteredUser.isEmpty()){
