@@ -184,6 +184,17 @@ class OrdersController(private val orderService: OrderService) {
             return userService.getUsers().filter { it.userId == userId }
         }
 
+        @GetMapping("/users/login")
+        fun checkAndLoginUser(@RequestBody email:String, @RequestBody password:String): String {
+            val filteredUser = userService.getUsers().filter { it.email == email && it.password == password }
+            if(filteredUser.isEmpty()){
+                throw IllegalArgumentException("Username and password does not match")
+            }
+            else{
+                return "dhruvalisbetterthancadyintennis"
+            }
+        }
+
         @PatchMapping("/users/update")
         // update an order
         fun updateUser(@RequestBody user: User):User{
