@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 export default function Navbar() {
   const navigate = useNavigate();
-  const isLoggedIn = false;
+  const isLoggedIn = true;
   return isLoggedIn ? (
     <div className="flex flex-row justify-between px-6 py-4">
       <span>

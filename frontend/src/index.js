@@ -10,6 +10,7 @@ import Login from "./pages/LoginScreen";
 import Register from "./pages/RegisterScreen";
 import ForgetPasswordScreen from "./pages/ForgetPasswordScreen";
 import AccountScreen from "./pages/AccountScreen";
+import EditAddressScreen from "./pages/EditAddressScreen";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -26,6 +27,11 @@ root.render(
             element={<ForgetPasswordScreen />}
           ></Route>
           <Route path="/profile" element={<AccountScreen />}></Route>
+          <Route
+            exact
+            path="/editAddress/:id"
+            element={<EditAddressScreen />}
+          ></Route>
         </Route>
       </Routes>
     </BrowserRouter>
