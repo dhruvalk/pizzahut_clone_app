@@ -2,7 +2,12 @@ import React, { useEffect, useState } from "react";
 import { IoHome } from "react-icons/io5";
 import { AiFillEdit } from "react-icons/ai";
 import { Link } from "react-router-dom";
-import { getAddressByUser, getUser, handleUpdateUser } from "../APIUtils";
+import {
+  getAddressByUser,
+  getUser,
+  handleUpdateUser,
+  deleteAddress,
+} from "../APIUtils";
 
 export default function AccountScreen() {
   const [user, setUser] = useState(null);
@@ -54,15 +59,16 @@ export default function AccountScreen() {
   };
 
   // address details
-  const [mockAddress, setMockAddress] = useState(null);
-  const [street, setStreet] = useState(null);
-  const [houseNum, setHouseNum] = useState(null);
-  const [label, setLabel] = useState(null);
+  const [addresses, setAddresses] = useState([]);
+  const [streets, setStreets] = useState([]);
+  const [houseNums, setHouseNums] = useState([]);
+  const [labels, setLabels] = useState([]);
 
   //address functions
-  const handleDeleteAddress = () => {
-    //TODO: send to backend to delete address
-    setMockAddress(null);
+  const handleDeleteAddress = (addressId, userId, index) => {
+    const newAddresses = addresses.filter((_, i) => i !== index);
+    setAddresses(newAddresses);
+    deleteAddress(userId, addressId);
   };
 
   useEffect(() => {
@@ -80,11 +86,20 @@ export default function AccountScreen() {
     const fetchAddress = async () => {
       const data = await getAddressByUser(1);
       if (data) {
-        let tempAddress = data[0];
-        setMockAddress(tempAddress);
-        setStreet(tempAddress.street);
-        setHouseNum(tempAddress.houseNum);
-        setLabel(tempAddress.label);
+        let tempAddresses = data;
+        setAddresses(tempAddresses);
+        const tempStreets = [];
+        const tempHouseNums = [];
+        const tempLabels = [];
+        tempAddresses.forEach((address) => {
+          tempStreets.push(address.street);
+          tempHouseNums.push(address.houseNum);
+          tempLabels.push(address.label);
+        });
+
+        setStreets(tempStreets);
+        setHouseNums(tempHouseNums);
+        setLabels(tempLabels);
       }
     };
     fetchUser();
@@ -169,32 +184,42 @@ export default function AccountScreen() {
             <text className="font-bold text-xl">Addresses</text>
             <AiFillEdit style={{ width: "25px", height: "25px" }} />
           </div>
-          {mockAddress && (
-            <div className="w-full flex flex-row justify-between p-4 text-lg ">
+          {addresses.map((address, index) => (
+            <div
+              className="w-full flex flex-row justify-between p-4 text-lg"
+              key={index}
+            >
               <div className="flex flex-row items-center justify-center">
                 <IoHome style={{ width: "25px", height: "25px" }} />
                 <div className="flex flex-col pl-4">
                   <text className="font-bold ">
-                    {street}, {houseNum}
+                    {streets[index]}, {houseNums[index]}
                   </text>
-                  <text>{label}</text>
+                  <text>{labels[index]}</text>
                 </div>
               </div>
               <div>
-                <Link to={`/editAddress/${mockAddress.addressId}`}>
+                <Link
+                  to={`/editAddress/${address.userId}/${address.addressId}`}
+                >
                   <button className="hover:underline ">Edit</button>
                 </Link>{" "}
                 |{" "}
                 <button
                   className="hover:underline"
-                  onClick={handleDeleteAddress}
+                  onClick={() =>
+                    handleDeleteAddress(
+                      address.addressId,
+                      address.userId,
+                      index
+                    )
+                  }
                 >
-                  {" "}
                   Delete
                 </button>
               </div>
             </div>
-          )}
+          ))}
         </div>
       </div>
     </>

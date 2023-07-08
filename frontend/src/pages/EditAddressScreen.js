@@ -1,23 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { getAddressByUser, handleUpdateAddress } from "../APIUtils";
 
-const EditAddressScreen = (props) => {
-  const { id } = useParams;
+const EditAddressScreen = () => {
+  const { userId, addressId } = useParams();
 
-  // TODO: implement API for address
-  const mockAddress = {
-    addressId: 123,
-    street: "Sesame Street",
-    houseNum: 123,
-    label: "Home",
-    isDefault: true,
-    createdDateTime: "01/01/11",
-    modifiedDateTime: "",
-  };
   // user details
-  const [street, setStreet] = useState(mockAddress.street);
-  const [houseNum, setHouseNum] = useState(mockAddress.houseNum);
-  const [label, setLabel] = useState(mockAddress.label);
+  const [address, setAddress] = useState(null);
+  const [street, setStreet] = useState(null);
+  const [houseNum, setHouseNum] = useState(null);
+  const [label, setLabel] = useState(null);
 
   const [modifiedStreet, setModifiedStreet] = useState(street);
   const [modifiedHouseNum, setModifiedHouseNum] = useState(houseNum);
@@ -44,7 +36,17 @@ const EditAddressScreen = (props) => {
     setHouseNum(modifiedHouseNum);
     setLabel(modifiedLabel);
     setIsModified(false);
-    // TODO: send to backend
+    handleUpdateAddress(
+      addressId,
+      userId,
+      modifiedStreet,
+      modifiedHouseNum,
+      modifiedLabel,
+      //TODO: add in button for default
+      false,
+      address.createdTime,
+      Date.now()
+    );
   };
 
   useEffect(() => {
@@ -53,6 +55,23 @@ const EditAddressScreen = (props) => {
     setModifiedLabel(label);
     setIsModified(false);
   }, [street, houseNum, label]);
+
+  useEffect(() => {
+    const fetchAddress = async () => {
+      const data = await getAddressByUser(userId);
+      if (data) {
+        let tempAddress = data.find(
+          (address) =>
+            address.userId == userId && address.addressId == addressId
+        );
+        setAddress(tempAddress);
+        setStreet(tempAddress.street);
+        setHouseNum(tempAddress.houseNum);
+        setLabel(tempAddress.label);
+      }
+    };
+    fetchAddress();
+  }, []);
 
   return (
     <div className="w-3/4 m-auto mt-16">

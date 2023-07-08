@@ -29,7 +29,7 @@ root.render(
           <Route path="/profile" element={<AccountScreen />}></Route>
           <Route
             exact
-            path="/editAddress/:id"
+            path="/editAddress/:userId/:addressId"
             element={<EditAddressScreen />}
           ></Route>
         </Route>

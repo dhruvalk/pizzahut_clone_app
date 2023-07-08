@@ -83,3 +83,44 @@ export async function getAddressByUser(userId) {
   const data = await response.json();
   return data;
 }
+
+export function deleteAddress(userId, addressId) {
+  fetch(`address/${userId}/${addressId}/delete`, { method: "DELETE" })
+    .then((response) => response.json())
+    .then((data) => console.log(data))
+    .catch((e) => console.log(e));
+}
+
+export function handleUpdateAddress(
+  addressId,
+  userId,
+  street,
+  houseNum,
+  label,
+  isDefault,
+  createdTime,
+  modifiedDateTime
+) {
+  const address = {
+    addressId: addressId,
+    userId: userId,
+    street: street,
+    houseNum: houseNum,
+    label: label,
+    isDefault: isDefault,
+    createdTime: createdTime,
+    modifiedDateTime: modifiedDateTime,
+  };
+  fetch("/address/update", {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(address),
+  })
+    .then((response) => response.json())
+    .then((data) => console.log(data))
+    .catch((error) => {
+      console.log(error);
+    });
+}
