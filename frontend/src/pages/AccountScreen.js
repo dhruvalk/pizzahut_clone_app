@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { IoHome } from "react-icons/io5";
 import { AiFillEdit } from "react-icons/ai";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import {
   getAddressByUser,
   getUser,
@@ -11,6 +11,7 @@ import {
 
 export default function AccountScreen() {
   const [user, setUser] = useState(null);
+  const navigate = useNavigate();
 
   // user details
   const [firstName, setFirstName] = useState(null);
@@ -52,7 +53,7 @@ export default function AccountScreen() {
       modifiedEmail,
       user.username,
       user.password,
-      user.contactNum,
+      modifiedContactNum,
       user.birthday
     );
     setIsModified(false);
@@ -71,37 +72,43 @@ export default function AccountScreen() {
     deleteAddress(userId, addressId);
   };
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      const data = await getUser(1);
-      if (data) {
-        let tempUser = data[0];
-        setUser(tempUser);
-        setFirstName(tempUser.firstName);
-        setLastName(tempUser.lastName);
-        setEmail(tempUser.email);
-        setContactNum(tempUser.contactNum);
-      }
-    };
-    const fetchAddress = async () => {
-      const data = await getAddressByUser(1);
-      if (data) {
-        let tempAddresses = data;
-        setAddresses(tempAddresses);
-        const tempStreets = [];
-        const tempHouseNums = [];
-        const tempLabels = [];
-        tempAddresses.forEach((address) => {
-          tempStreets.push(address.street);
-          tempHouseNums.push(address.houseNum);
-          tempLabels.push(address.label);
-        });
+  const fetchUser = async () => {
+    const data = await getUser(1);
+    if (data) {
+      let tempUser = data;
+      setUser(tempUser);
+      setFirstName(tempUser.firstName);
+      setLastName(tempUser.lastName);
+      setEmail(tempUser.email);
+      setContactNum(tempUser.contactNum);
+    }
+  };
 
-        setStreets(tempStreets);
-        setHouseNums(tempHouseNums);
-        setLabels(tempLabels);
-      }
-    };
+  const fetchAddress = async () => {
+    const data = await getAddressByUser(1);
+    if (data) {
+      let tempAddresses = data;
+      setAddresses(tempAddresses);
+      const tempStreets = [];
+      const tempHouseNums = [];
+      const tempLabels = [];
+      tempAddresses.forEach((address) => {
+        tempStreets.push(address.street);
+        tempHouseNums.push(address.houseNum);
+        tempLabels.push(address.label);
+      });
+
+      setStreets(tempStreets);
+      setHouseNums(tempHouseNums);
+      setLabels(tempLabels);
+    }
+  };
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate("/login");
+    }
     fetchUser();
     fetchAddress();
   }, []);

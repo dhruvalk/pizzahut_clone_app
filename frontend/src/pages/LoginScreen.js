@@ -1,15 +1,20 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ImGoogle3 } from "react-icons/im";
 import { FaFacebook } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { handleLogIn } from "../APIUtils";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(email, pass);
+    const response = await handleLogIn(email, pass);
+    if (response.token) {
+      localStorage.setItem("token", response.token);
+    }
   };
+
   return (
     <div className="flex flex-col items-center justify-center h-screen space-y-4 w-3/4 md:w-1/2 m-auto">
       <div className="font-bold text-5xl text-left"> Welcome Back</div>

@@ -180,18 +180,19 @@ class OrdersController(private val orderService: OrderService) {
         fun getAllUsers() = userService.getUsers()
 
         @GetMapping("/users/{userId}")
-        fun getUserInfo(@PathVariable("userId") userId: Int): List<User>{
-            return userService.getUsers().filter { it.userId == userId }
+        fun getUserInfo(@PathVariable("userId") userId: Int): User?{
+            return userService.getUsers().firstOrNull{ it.userId == userId }
         }
 
         @PostMapping("/users/login")
-        fun checkAndLoginUser(@RequestBody email:String, @RequestBody password:String): String {
-            val filteredUser = userService.getUsers().filter { it.email == email && it.password == password }
+        @ResponseStatus(HttpStatus.ACCEPTED)
+        fun checkAndLoginUser(@RequestBody loginBody:Map<String,String>): Map<String, String> {
+            val filteredUser = userService.getUsers().filter { it.email == loginBody["email"] && it.password == loginBody["password"] }
             if(filteredUser.isEmpty()){
                 throw IllegalArgumentException("Username and password does not match")
             }
             else{
-                return "dhruvalisbetterthancadyintennis"
+                return mapOf("token" to "dhruvalisbetterthancadyintennis")
             }
         }
 
@@ -206,6 +207,8 @@ class OrdersController(private val orderService: OrderService) {
             }
             return user
         }
+
+        
 
         @DeleteMapping("users/{userId}/delete")
         @ResponseStatus(HttpStatus.NO_CONTENT)
