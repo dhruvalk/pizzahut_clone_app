@@ -18,6 +18,7 @@ export default function Register() {
   const [birthday, setBirthday] = useState(new Date());
   const [password1Visible, setPassword1Visible] = useState(false);
   const [password2Visible, setPassword2Visible] = useState(false);
+  const [passwordMatch, setPasswordMatch] = useState(false);
 
   const [isChecked, setIsChecked] = useState(false);
   const [isCheckedPrivacy, setIsCheckedPrivacy] = useState(false);
@@ -34,6 +35,9 @@ export default function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      if (!passwordMatch) {
+        return;
+      }
       const response = await handleSignUp(
         firstName,
         lastName,
@@ -53,6 +57,14 @@ export default function Register() {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    if (pass2 == pass1) {
+      setPasswordMatch(true);
+    } else {
+      setPasswordMatch(false);
+    }
+  }, [pass2]);
 
   return (
     <div className="flex flex-col items-center justify-center space-y-4 w-3/4 md:w-1/2 h-full mx-auto mt-16">
@@ -143,7 +155,11 @@ export default function Register() {
           <input
             value={pass2}
             onChange={(e) => setPass2(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-500"
+            className={
+              passwordMatch
+                ? "w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-500"
+                : "w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-red-500"
+            }
             type={password2Visible ? "text" : "password"}
             id="password2"
             name="password2"
@@ -164,6 +180,9 @@ export default function Register() {
             ></AiFillEye>
           )}
         </div>
+        {!passwordMatch && (
+          <span className="bg-rose-300 px-6 py-2">Passwords do not match!</span>
+        )}
         <label className="flex items-center">
           Gender:
           <select
