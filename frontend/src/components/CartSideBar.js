@@ -5,6 +5,7 @@ import {
   AiFillPlusCircle,
   AiFillMinusCircle,
 } from "react-icons/ai";
+import { createNewOrder } from "../APIUtils";
 
 export default function CartSideBar({ data, setData }) {
   const [total, setTotal] = useState(0);
@@ -60,6 +61,11 @@ export default function CartSideBar({ data, setData }) {
     });
   }
 
+  function checkoutHandler() {
+    console.log(data);
+    createNewOrder(1, 1, 1, Date.now(), total, "Ordered", "Delivery");
+  }
+
   return (
     <div className="w-1/4 border border-gray-300 sticky top-0 right-0 h-screen flex flex-col p-2">
       <h1 className="text-xl font-bold w-full text-center mb-4">Cart</h1>
@@ -99,7 +105,7 @@ export default function CartSideBar({ data, setData }) {
             </div>
             <button
               className="bg-green rounded-lg py-2 text-white text-bold"
-              onClick={() => console.log(data)}
+              onClick={checkoutHandler}
             >
               Checkout
             </button>

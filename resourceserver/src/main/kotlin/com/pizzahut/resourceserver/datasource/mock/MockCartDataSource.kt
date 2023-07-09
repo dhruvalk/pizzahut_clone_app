@@ -2,6 +2,7 @@ package com.pizzahut.resourceserver.datasource.mock
 
 import com.pizzahut.resourceserver.model.Cart
 import com.pizzahut.resourceserver.model.OrderItem
+import com.pizzahut.resourceserver.model.Type
 import org.springframework.stereotype.Repository
 import java.time.LocalDateTime
 
@@ -10,16 +11,16 @@ class MockCartDataSource {
 
     private val cartList = mutableListOf<Cart>(
         Cart( 1, LocalDateTime.now(), listOf<OrderItem>(
-            OrderItem(1, 1, 1, "no mushrooms please"),
-            OrderItem(2, 1, 2, ""),
+            OrderItem(1, 1, 1, "no mushrooms please", Type.`Large Pan`),
+            OrderItem(2, 1, 2, "", Type.`Large Pan`),
         )),
-        Cart(2, LocalDateTime.of(2023, 6, 17, 10, 30, 0), listOf( OrderItem(3,2,1, ""),
-            OrderItem(6,2,1, "less spicy"))
+        Cart(2, LocalDateTime.of(2023, 6, 17, 10, 30, 0), listOf( OrderItem(3,2,1, "", Type.`Large Pan`),
+            OrderItem(6,2,1, "less spicy", Type.`Large Pan`))
     ),
-        Cart(3,LocalDateTime.of(2023, 2, 11, 8, 30, 0), listOf(OrderItem(2,1,2, ""),
-            OrderItem(3,1,1, "no milk please"),
-            OrderItem(4,2,1, ""),
-            OrderItem(5,2,1, ""),) )
+        Cart(3,LocalDateTime.of(2023, 2, 11, 8, 30, 0), listOf(OrderItem(2,1,2, "", Type.`Large Pan`),
+            OrderItem(3,1,1, "no milk please", Type.`Large Pan`),
+            OrderItem(4,2,1, "", Type.`Large Pan`),
+            OrderItem(5,2,1, "", Type.`Large Pan`),) )
     )
 
     fun getCartByUser(userId: Int): Cart {

@@ -32,6 +32,9 @@ export default function Navbar({ isLoggedIn, setIsLoggedIn }) {
           <Link to="/profile">My Account</Link>
         </div>
         <div className="px-6 cursor-pointer hover:underline">
+          <Link to="/track">Track</Link>
+        </div>
+        <div className="px-6 cursor-pointer hover:underline">
           <Link to="/login" onClick={signOutHandler}>
             Sign Out
           </Link>
@@ -57,9 +60,6 @@ export default function Navbar({ isLoggedIn, setIsLoggedIn }) {
         </div>
         <div className="px-6 cursor-pointer hover:underline">
           <Link to="/register">Register</Link>
-        </div>
-        <div className="px-6 cursor-pointer hover:underline">
-          <Link to="">Track</Link>
         </div>
       </span>
     </div>

@@ -10,6 +10,43 @@ export async function getItemPrices(id) {
   return data;
 }
 
+export function createNewOrder(
+  orderId,
+  addressId,
+  userId,
+  orderDateTime,
+  totalAmount,
+  orderStatus,
+  orderType
+) {
+  fetch("/orders/create", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      orderId: orderId,
+      addressId: addressId,
+      userId: userId,
+      orderDateTime: orderDateTime,
+      totalAmount: totalAmount,
+      orderStatus: orderStatus,
+      orderType: orderType,
+    }),
+  })
+    .then((response) => response.json())
+    .then((data) => console.log(data))
+    .catch((error) => {
+      console.log(error);
+    });
+}
+
+export async function getAllUserOrders(userid) {
+  const response = await fetch("/orders/" + userid + "/all");
+  const data = await response.json();
+  return data;
+}
+
 export function handleSignUp(
   firstName,
   lastName,

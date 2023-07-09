@@ -2,18 +2,19 @@ package com.pizzahut.resourceserver.datasource.mock
 
 import com.pizzahut.resourceserver.model.Order
 import com.pizzahut.resourceserver.model.OrderItem
+import com.pizzahut.resourceserver.model.Type
 import org.springframework.stereotype.Repository
 
 @Repository
 class MockOrderDataSource {
     private val orderItemsList = mutableListOf<OrderItem>(
-        OrderItem(1,1,1, "no mushrooms please"),
-        OrderItem(2,1,2, ""),
-        OrderItem(3,1,1, "no milk please"),
-        OrderItem(3,2,1, ""),
-        OrderItem(3,2,1, ""),
-        OrderItem(3,2,1, "less spicy"),
-        OrderItem(3,2,1, "no egg"),
+        OrderItem(1,1,1, "no mushrooms please", Type.`Large Pan`),
+        OrderItem(2,1,2, "", Type.`Large Pan`),
+        OrderItem(3,1,1, "no milk please", Type.`Large Pan`),
+        OrderItem(3,2,1, "", Type.`Large Pan`),
+        OrderItem(3,2,1, "", Type.`Large Pan`),
+        OrderItem(3,2,1, "less spicy", Type.`Large Pan`),
+        OrderItem(3,2,1, "no egg", Type.`Large Pan`),
     )
 
     private val orderList = mutableListOf<Order>(

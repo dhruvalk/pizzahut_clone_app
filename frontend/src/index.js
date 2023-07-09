@@ -13,6 +13,7 @@ import AccountScreen from "./pages/AccountScreen";
 import EditAddressScreen from "./pages/EditAddressScreen";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import CreateAddressScreen from "./pages/CreateAddressScreen";
+import TrackScreen from "./pages/TrackScreen";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -51,6 +52,14 @@ root.render(
             element={
               <ProtectedRoute>
                 <CreateAddressScreen />
+              </ProtectedRoute>
+            }
+          ></Route>
+          <Route
+            path="/track"
+            element={
+              <ProtectedRoute>
+                <TrackScreen />
               </ProtectedRoute>
             }
           ></Route>

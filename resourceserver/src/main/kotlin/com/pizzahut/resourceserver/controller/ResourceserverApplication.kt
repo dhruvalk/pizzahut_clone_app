@@ -115,6 +115,7 @@ class OrdersController(private val orderService: OrderService) {
     @ResponseStatus(HttpStatus.CREATED)
     /// create a new order
     fun addNewOrder(@RequestBody order: Order): Order {
+        order.orderId = orderService.getOrders().size + 1
         orderService.addOrder(order)
         return order
     }

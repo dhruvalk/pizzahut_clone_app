@@ -5,7 +5,8 @@ data class OrderItem(
     var itemId: Int,
     var orderId: Int,
     var quantity: Int,
-    var comments: String
+    var comments: String,
+    var type: Type
 )
 
 
