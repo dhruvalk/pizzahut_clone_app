@@ -25,6 +25,9 @@ export default function Navbar({ isLoggedIn, setIsLoggedIn }) {
       </span>
       <span className="flex flex-row divide-x-2">
         <div className="px-6 cursor-pointer hover:underline">
+          <Link to="/order">Order</Link>
+        </div>
+        <div className="px-6 cursor-pointer hover:underline">
           <Link to="/profile">My Account</Link>
         </div>
         <div className="px-6 cursor-pointer hover:underline">

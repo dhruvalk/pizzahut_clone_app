@@ -64,20 +64,38 @@ export default function AccountScreen() {
     deleteAddress(userId, addressId);
   };
 
+  const getUserId = () => {
+    try {
+      const userJson = localStorage.getItem("user");
+      const user = JSON.parse(userJson);
+      const userId = user.userId;
+      return userId;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const userId = getUserId();
+
   const fetchUser = async () => {
-    const data = await getUser(1);
-    if (data) {
-      let tempUser = data;
-      setUser(tempUser);
-      setFirstName(tempUser.firstName);
-      setLastName(tempUser.lastName);
-      setEmail(tempUser.email);
-      setContactNum(tempUser.contactNum);
+    try {
+      const data = await getUser(userId);
+      if (data) {
+        let tempUser = data;
+        setUser(tempUser);
+        setFirstName(tempUser.firstName);
+        setLastName(tempUser.lastName);
+        setEmail(tempUser.email);
+        setContactNum(tempUser.contactNum);
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
   const fetchAddress = async () => {
-    const data = await getAddressByUser(1);
+    const userId = getUserId();
+    const data = await getAddressByUser(userId);
     if (data) {
       let tempAddresses = data;
       setAddresses(tempAddresses);
@@ -106,7 +124,7 @@ export default function AccountScreen() {
 
   return (
     <>
-      <div className="w-full bg-green text-white h-1/6 justify-center text-4xl px-20 py-14 mb-16">
+      <div className="w-full bg-red text-white h-1/6 justify-center text-4xl px-20 py-14 mb-16">
         Hello, {firstName}
       </div>
       <div className="flex flex-col items-center h-screen space-y-8 w-3/4 m-auto">
@@ -172,7 +190,7 @@ export default function AccountScreen() {
         <div className="border-2 border-grey w-full divide-y divide-solid divide-y-2 bg-zinc-50">
           <div className="p-4 flex flex-row justify-between ">
             <text className="font-bold text-xl">Addresses</text>
-            <Link to={"/createAddress/1"}>
+            <Link to={`/createAddress/${userId}`}>
               <IoAddOutline style={{ width: "25px", height: "25px" }} />
             </Link>
           </div>

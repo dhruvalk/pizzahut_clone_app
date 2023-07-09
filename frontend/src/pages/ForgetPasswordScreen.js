@@ -7,7 +7,7 @@ export default function ForgetPasswordScreen() {
     console.log(email);
   };
   return (
-    <div className="flex flex-col items-center justify-center h-screen space-y-4 w-3/4 md:w-1/2 m-auto">
+    <div className="flex flex-col items-center justify-center h-full space-y-4 w-3/4 md:w-1/2 m-auto mt-16">
       <div className="font-bold text-5xl text-left"> Reset Password</div>
       <div className="text-left">
         Please enter your email address and we will email you instructions to
@@ -31,7 +31,7 @@ export default function ForgetPasswordScreen() {
         </button>
       </form>
       <div>
-        If you signed up using Facebook or Google you will need to reset your
+        If you signed up using Facebook or Google, you will need to reset your
         password with that service.
       </div>
     </div>

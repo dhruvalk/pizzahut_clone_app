@@ -190,13 +190,14 @@ class OrdersController(private val orderService: OrderService) {
 
         @PostMapping("/users/login")
         @ResponseStatus(HttpStatus.ACCEPTED)
-        fun checkAndLoginUser(@RequestBody loginBody:Map<String,String>): Map<String, String> {
-            val filteredUser = userService.getUsers().filter { it.email == loginBody["email"] && it.password == loginBody["password"] }
-            if(filteredUser.isEmpty()){
-                throw IllegalArgumentException("Username and password does not match")
+        fun checkAndLoginUser(@RequestBody loginBody:Map<String,String>): LoginResponse {
+            val filteredUser = userService.getUsers().firstOrNull { it.email == loginBody["email"] && it.password == loginBody["password"] }
+            if(filteredUser == null ){
+                throw IllegalArgumentException("Email and password does not match")
             }
             else{
-                return mapOf("token" to "dhruvalisbetterthancadyintennis")
+                // return mapOf("token" to "dhruvalisbetterthancadyintennis")
+                return LoginResponse(filteredUser, "dhruvalisbetterthancadyintennis")
             }
         }
 
@@ -230,8 +231,8 @@ class OrdersController(private val orderService: OrderService) {
         @ResponseStatus(HttpStatus.CREATED)
         // add an item to order
         fun addNewUser(@RequestBody user: User): User {
-            if(userService.getUsers().any{it.userId == user.userId}){
-                throw IllegalArgumentException("user with that id already exists")
+            if(userService.getUsers().any{it.email == user.email}){
+                throw IllegalArgumentException("user with that email already exists")
             }
             userService.addUser(user)
             return user

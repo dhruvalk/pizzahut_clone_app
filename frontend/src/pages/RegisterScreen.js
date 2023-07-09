@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { ImGoogle3 } from "react-icons/im";
 import { FaFacebook } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { handleSignUp } from "../APIUtils";
+import { AiFillEyeInvisible, AiFillEye } from "react-icons/ai";
 
 export default function Register() {
   const [firstName, setFirstName] = useState("");
@@ -15,6 +16,8 @@ export default function Register() {
   const [pass2, setPass2] = useState("");
   const [gender, setGender] = useState("");
   const [birthday, setBirthday] = useState(new Date());
+  const [password1Visible, setPassword1Visible] = useState(false);
+  const [password2Visible, setPassword2Visible] = useState(false);
 
   const [isChecked, setIsChecked] = useState(false);
   const [isCheckedPrivacy, setIsCheckedPrivacy] = useState(false);
@@ -25,28 +28,51 @@ export default function Register() {
     setIsCheckedPrivacy(event.target.checked);
   };
 
-  const handleSubmit = (e) => {
+  const [signInError, setSignInError] = useState(false);
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    handleSignUp(0, firstName, lastName, email, "mock", pass1, phone, birthday);
-    // console.log(email, pass1, firstName, lastName, phone, gender, pass2);
+    try {
+      const response = await handleSignUp(
+        firstName,
+        lastName,
+        "mock",
+        email,
+        pass1,
+        phone,
+        birthday
+      );
+      // console.log(response);
+      if (response.status == 500) {
+        setSignInError(true);
+      } else {
+        navigate("/login");
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  // useEffect(() => {
-  //   fetch("/menu/all")
-  //     .then((response) => response.json())
-  //     .then((data) => console.log(data))
-  //     .catch((e) => console.log(e));
-  // }, []);
-
   return (
-    <div className="flex flex-col items-center justify-center space-y-4 w-3/4 md:w-1/2 h-screen m-auto">
+    <div className="flex flex-col items-center justify-center space-y-4 w-3/4 md:w-1/2 h-full mx-auto mt-16">
       <div className="font-bold text-5xl text-left"> Create Account</div>
-      <div className="text-left">
-        Already have an account?{" "}
-        <Link to="/login" className="italic text-blue-500 underline">
-          Sign In
-        </Link>
-      </div>
+      {signInError ? (
+        <div className="bg-rose-300 px-6 py-2">
+          This email address is already associated with an account. If this
+          account is yours, you can{" "}
+          <Link to="/getmypassword" className="underline italic text-blue-700">
+            reset your password.
+          </Link>
+        </div>
+      ) : (
+        <div className="text-left">
+          Already have an account?{" "}
+          <Link to="/login" className="italic text-blue-500 underline">
+            Sign In
+          </Link>
+        </div>
+      )}
       <form className="flex flex-col space-y-4 w-full" onSubmit={handleSubmit}>
         <input
           value={firstName}
@@ -88,26 +114,56 @@ export default function Register() {
           placeholder="Phone Number"
           required
         />
-        <input
-          value={pass1}
-          onChange={(e) => setPass1(e.target.value)}
-          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-500"
-          type="password"
-          id="password1"
-          name="password1"
-          placeholder="Password"
-          required
-        />
-        <input
-          value={pass2}
-          onChange={(e) => setPass2(e.target.value)}
-          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-500"
-          type="password"
-          id="password2"
-          name="password2"
-          placeholder="Retype Password"
-          required
-        />
+        <div className="relative">
+          <input
+            value={pass1}
+            onChange={(e) => setPass1(e.target.value)}
+            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-500"
+            type={password1Visible ? "text" : "password"}
+            id="password1"
+            name="password1"
+            placeholder="Password"
+            required
+          />
+          {password1Visible ? (
+            <AiFillEyeInvisible
+              style={{ width: "20px", height: "20px" }}
+              onClick={() => setPassword1Visible(!password1Visible)}
+              className="absolute right-4 top-2/4 transform -translate-y-2/4"
+            ></AiFillEyeInvisible>
+          ) : (
+            <AiFillEye
+              style={{ width: "20px", height: "20px" }}
+              onClick={() => setPassword1Visible(!password1Visible)}
+              className="absolute right-4 top-2/4 transform -translate-y-2/4"
+            ></AiFillEye>
+          )}
+        </div>
+        <div className="relative">
+          <input
+            value={pass2}
+            onChange={(e) => setPass2(e.target.value)}
+            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-500"
+            type={password2Visible ? "text" : "password"}
+            id="password2"
+            name="password2"
+            placeholder="Retype Password"
+            required
+          />
+          {password2Visible ? (
+            <AiFillEyeInvisible
+              style={{ width: "20px", height: "20px" }}
+              onClick={() => setPassword2Visible(!password2Visible)}
+              className="absolute right-4 top-2/4 transform -translate-y-2/4"
+            ></AiFillEyeInvisible>
+          ) : (
+            <AiFillEye
+              style={{ width: "20px", height: "20px" }}
+              onClick={() => setPassword2Visible(!password2Visible)}
+              className="absolute right-4 top-2/4 transform -translate-y-2/4"
+            ></AiFillEye>
+          )}
+        </div>
         <label className="flex items-center">
           Gender:
           <select

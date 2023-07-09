@@ -11,7 +11,6 @@ export async function getItemPrices(id) {
 }
 
 export function handleSignUp(
-  userId,
   firstName,
   lastName,
   username,
@@ -21,6 +20,7 @@ export function handleSignUp(
   birthday
 ) {
   const user = {
+    userId: Math.floor(Math.random() * 100),
     firstName: firstName,
     lastName: lastName,
     email: email,
@@ -29,7 +29,7 @@ export function handleSignUp(
     contactNum: contactNum,
     birthday: birthday,
   };
-  fetch("/users/create", {
+  return fetch("/users/create", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -37,9 +37,9 @@ export function handleSignUp(
     body: JSON.stringify(user),
   })
     .then((response) => response.json())
-    .then((data) => console.log(data))
+    .then((data) => data)
     .catch((error) => {
-      console.log(error);
+      throw new Error(error);
     });
 }
 

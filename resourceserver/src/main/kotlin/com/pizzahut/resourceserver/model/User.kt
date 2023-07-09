@@ -10,3 +10,5 @@ data class User (
     var contactNum : Int,
     var birthday : String
 )
+
+data class LoginResponse(val user: User, val token: String)
