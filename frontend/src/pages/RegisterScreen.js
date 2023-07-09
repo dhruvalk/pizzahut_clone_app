@@ -64,7 +64,7 @@ export default function Register() {
     } else {
       setPasswordMatch(false);
     }
-  }, [pass2]);
+  }, [pass1, pass2]);
 
   return (
     <div className="flex flex-col items-center justify-center space-y-4 w-3/4 md:w-1/2 h-full mx-auto mt-16">
