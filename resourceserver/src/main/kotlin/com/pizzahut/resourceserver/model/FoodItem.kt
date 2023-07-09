@@ -11,7 +11,7 @@ enum class Type {
     `Large Cheesy Stuffed Crust`,
     `Large San Francisco Style Sourdough`,
 }
-data class FoodItem(var itemID: Int, var photo: String, var description: String, var tags: List<String>, var type: Type)
+data class FoodItem(var title: String, var itemID: Int, var photo: String, var description: String, var tags: List<String>)
 
 
 

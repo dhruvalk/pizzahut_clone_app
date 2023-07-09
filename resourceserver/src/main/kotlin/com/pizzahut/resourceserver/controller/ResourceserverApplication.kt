@@ -73,6 +73,10 @@ class PriceController(private val priceService: PriceService){
 
     @GetMapping("/price/all")
     fun getPrices() = priceService.getPrices()
+
+    @GetMapping("/price/id")
+    fun getMenuItemPricesById(@RequestParam("itemId") itemId: Int):List<Price> = priceService.getPricesById(itemId)
+
     @GetMapping("/price")
     fun getMenuItemPrice(@RequestParam("itemId") itemId: Int, @RequestParam("type") type:Type): Double = priceService.getMenuItemPrice(itemId,type)
 

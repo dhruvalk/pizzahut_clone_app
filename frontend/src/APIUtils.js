@@ -1,8 +1,13 @@
-export function getAllMenu() {
-  fetch("/menu/all")
-    .then((response) => response.json())
-    .then((data) => console.log(data))
-    .catch((e) => console.log(e));
+export async function getAllMenu() {
+  const response = await fetch("/menu/all");
+  const data = await response.json();
+  return data;
+}
+
+export async function getItemPrices(id) {
+  const response = await fetch("/price/id?itemId=" + id);
+  const data = await response.json();
+  return data;
 }
 
 export function handleSignUp(

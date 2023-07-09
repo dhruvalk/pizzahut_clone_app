@@ -1,16 +1,33 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { getItemPrices } from "../APIUtils";
 
-export default function MenuItem({
-  title,
-  desc,
-  image_url,
-  onClick,
-  types = [],
-}) {
+export default function MenuItem({ title, desc, image_url, onClick, id }) {
   function onClickHandler() {
-    onClick(title, type, 28.88);
+    onClick(title, type, price);
   }
-  const [type, setType] = useState("Large personal pan");
+  const [type, setType] = useState("");
+  const [price, setPrice] = useState(0);
+  const [allPricesData, setAllPricesData] = useState([]);
+
+  useEffect(() => {
+    getAllItemData();
+  }, []);
+
+  async function getAllItemData() {
+    const data = await getItemPrices(id);
+    setAllPricesData(data);
+    if (data.length !== 0) {
+      setType(data[0].type);
+      setPrice(data[0].price);
+    }
+  }
+
+  function typeChangeHandler(e) {
+    setType(e.target.value);
+    const price = allPricesData.filter((val) => val.type === e.target.value)[0]
+      .price;
+    setPrice(price);
+  }
 
   return (
     <div className="border border-gray-300 m-2 w-1/5 rounded-md flex flex-col justify-between items-center pb-4 shadow-md">
@@ -35,10 +52,12 @@ export default function MenuItem({
           name="pizzaOptions"
           className="border border-gray-300 w-full mt-2 py-1 px-2 rounded-md text-sm"
           value={type}
-          onChange={(e) => setType(e.target.value)}
+          onChange={typeChangeHandler}
         >
-          {types.map((type) => (
-            <option value={type}>{type}</option>
+          {allPricesData.map((val) => (
+            <option value={val.type} key={val.itemID + val.type}>
+              {val.type}
+            </option>
           ))}
         </select>
         <button
@@ -46,7 +65,7 @@ export default function MenuItem({
           onClick={onClickHandler}
         >
           <div>Add</div>
-          <div>28.88</div>
+          <div>${price}</div>
         </button>
       </section>
     </div>

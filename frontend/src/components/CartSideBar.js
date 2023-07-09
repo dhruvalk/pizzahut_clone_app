@@ -17,7 +17,6 @@ export default function CartSideBar({ data, setData }) {
   }, [data]);
 
   function deleteHandler(title, type) {
-    console.log(title, type, data);
     setData((prev) =>
       prev.filter((val) => !(val.title === title && val.type === type))
     );
@@ -75,6 +74,7 @@ export default function CartSideBar({ data, setData }) {
             {data.map((entry) => (
               <CartItem
                 title={entry.title}
+                key={entry.title + entry.type}
                 type={entry.type}
                 qty={entry.qty}
                 price={entry.price}

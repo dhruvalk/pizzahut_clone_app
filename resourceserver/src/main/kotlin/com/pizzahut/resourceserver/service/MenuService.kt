@@ -25,6 +25,7 @@ class PriceService(private val dataSource: MockPriceDataSource){
     fun getMenuItemPrice(id: Any, type: Type): Double  = dataSource.getMenuItemPrice(id,type)
     fun addMenuItemPrice(price: Price): Price = dataSource.addMenuItemPrice(price)
     fun getPrices() = dataSource.getPrices()
+    fun getPricesById(itemId : Int) = dataSource.getPricesById(itemId)
     fun updateMenuItemPrice(price: Price): Price = dataSource.updateMenuItemPrice(price)
     fun deleteMenuItemPrice(itemId: Int, type: Type) = dataSource.deleteMenuItemPrice(itemId,type)
     fun deleteMenuItemPriceById(itemId: Int) = dataSource.deleteMenuItemPriceById(itemId)
