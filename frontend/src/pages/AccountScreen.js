@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { IoHome } from "react-icons/io5";
-import { AiFillEdit } from "react-icons/ai";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { IoAddOutline } from "react-icons/io5";
+import { Link, useNavigate } from "react-router-dom";
 import {
   getAddressByUser,
   getUser,
@@ -18,42 +18,34 @@ export default function AccountScreen() {
   const [lastName, setLastName] = useState(null);
   const [email, setEmail] = useState(null);
   const [contactNum, setContactNum] = useState(null);
-  const [modifiedFirstName, setModifiedFirstName] = useState(firstName);
-  const [modifiedLastName, setModifiedLastName] = useState(lastName);
-  const [modifiedEmail, setModifiedEmail] = useState(email);
-  const [modifiedContactNum, setModifiedContactNum] = useState(contactNum);
   const [isModified, setIsModified] = useState(false);
 
   // user functions
   const handleFirstNameChange = (event) => {
-    setModifiedFirstName(event.target.value);
+    setFirstName(event.target.value);
     setIsModified(true);
   };
   const handleLastNameChange = (event) => {
-    setModifiedLastName(event.target.value);
+    setLastName(event.target.value);
     setIsModified(true);
   };
   const handleEmailChange = (event) => {
-    setModifiedEmail(event.target.value);
+    setEmail(event.target.value);
     setIsModified(true);
   };
   const handleContactNumChange = (event) => {
-    setModifiedContactNum(event.target.value);
+    setContactNum(event.target.value);
     setIsModified(true);
   };
   const handleSaveChanges = () => {
-    setFirstName(modifiedFirstName);
-    setLastName(modifiedLastName);
-    setContactNum(modifiedContactNum);
-    setEmail(modifiedEmail);
     handleUpdateUser(
       1,
-      modifiedFirstName,
-      modifiedLastName,
-      modifiedEmail,
+      firstName,
+      lastName,
+      email,
       user.username,
       user.password,
-      modifiedContactNum,
+      contactNum,
       user.birthday
     );
     setIsModified(false);
@@ -97,7 +89,6 @@ export default function AccountScreen() {
         tempHouseNums.push(address.houseNum);
         tempLabels.push(address.label);
       });
-
       setStreets(tempStreets);
       setHouseNums(tempHouseNums);
       setLabels(tempLabels);
@@ -113,18 +104,10 @@ export default function AccountScreen() {
     fetchAddress();
   }, []);
 
-  useEffect(() => {
-    setModifiedFirstName(firstName);
-    setModifiedLastName(lastName);
-    setModifiedEmail(email);
-    setModifiedContactNum(contactNum);
-    setIsModified(false);
-  }, [firstName, lastName, email, contactNum]);
-
   return (
     <>
-      <div className="w-full bg-green text-white h-1/6 justify-center text-5xl p-20 mb-16">
-        Hello, {lastName} {firstName}
+      <div className="w-full bg-green text-white h-1/6 justify-center text-4xl px-20 py-14 mb-16">
+        Hello, {firstName}
       </div>
       <div className="flex flex-col items-center h-screen space-y-8 w-3/4 m-auto">
         <div className="border-2 border-grey w-full divide-y divide-solid divide-y-2 bg-zinc-50">
@@ -136,7 +119,7 @@ export default function AccountScreen() {
                 type="text"
                 id="firstName"
                 name="firstName"
-                value={modifiedFirstName}
+                value={firstName}
                 onChange={handleFirstNameChange}
                 className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-500"
               ></input>
@@ -147,7 +130,7 @@ export default function AccountScreen() {
                 type="text"
                 id="lastName"
                 name="lastName"
-                value={modifiedLastName}
+                value={lastName}
                 onChange={handleLastNameChange}
                 className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-500"
               ></input>
@@ -158,7 +141,7 @@ export default function AccountScreen() {
                 type="text"
                 id="email"
                 name="email"
-                value={modifiedEmail}
+                value={email}
                 onChange={handleEmailChange}
                 className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-500"
               ></input>
@@ -169,7 +152,7 @@ export default function AccountScreen() {
                 type="tel"
                 id="phone"
                 name="phone"
-                value={modifiedContactNum}
+                value={contactNum}
                 onChange={handleContactNumChange}
                 className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-500"
               ></input>
@@ -189,7 +172,9 @@ export default function AccountScreen() {
         <div className="border-2 border-grey w-full divide-y divide-solid divide-y-2 bg-zinc-50">
           <div className="p-4 flex flex-row justify-between ">
             <text className="font-bold text-xl">Addresses</text>
-            <AiFillEdit style={{ width: "25px", height: "25px" }} />
+            <Link to={"/createAddress/1"}>
+              <IoAddOutline style={{ width: "25px", height: "25px" }} />
+            </Link>
           </div>
           {addresses.map((address, index) => (
             <div

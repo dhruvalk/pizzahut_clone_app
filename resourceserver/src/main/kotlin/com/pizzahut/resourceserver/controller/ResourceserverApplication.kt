@@ -275,7 +275,6 @@ class AddressController(private val addressService: AddressService) {
     }
 
     @PatchMapping("/address/update")
-    // update an order
     fun updateAddress(@RequestBody address: Address):Address{
         if(addressService.getAddress().any{it.userId == address.userId && it.addressId == address.addressId}){
             addressService.updateAddress(address)
@@ -288,7 +287,6 @@ class AddressController(private val addressService: AddressService) {
 
     @DeleteMapping("address/{userId}/{addressId}/delete")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    // delete an order
     fun deleteAddress(@PathVariable("addressId") addressId: Int,@PathVariable("userId") userId: Int){
         if(addressService.getAddress().any{userId == it.userId && addressId == it.addressId}){
             addressService.deleteAddress(addressId, userId)
@@ -300,7 +298,6 @@ class AddressController(private val addressService: AddressService) {
 
     @PostMapping("/address/create")
     @ResponseStatus(HttpStatus.CREATED)
-    // add an item to order
     fun addNewAddress(@RequestBody address: Address): Address {
         if(addressService.getAddress().any{it.userId == address.userId && it.addressId == address.addressId}){
             throw IllegalArgumentException("that address id already exists for that user")

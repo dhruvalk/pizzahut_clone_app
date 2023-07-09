@@ -12,6 +12,7 @@ import ForgetPasswordScreen from "./pages/ForgetPasswordScreen";
 import AccountScreen from "./pages/AccountScreen";
 import EditAddressScreen from "./pages/EditAddressScreen";
 import { ProtectedRoute } from "./components/ProtectedRoute";
+import CreateAddressScreen from "./pages/CreateAddressScreen";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -38,7 +39,20 @@ root.render(
           <Route
             exact
             path="/editAddress/:userId/:addressId"
-            element={<EditAddressScreen />}
+            element={
+              <ProtectedRoute>
+                <EditAddressScreen />
+              </ProtectedRoute>
+            }
+          ></Route>
+          <Route
+            exact
+            path={"/createAddress/:userId"}
+            element={
+              <ProtectedRoute>
+                <CreateAddressScreen />
+              </ProtectedRoute>
+            }
           ></Route>
         </Route>
       </Routes>

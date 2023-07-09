@@ -145,3 +145,26 @@ export function handleUpdateAddress(
       console.log(error);
     });
 }
+
+export function handleAddAddress(userId, street, houseNum, label, isDefault) {
+  const address = {
+    addressId: Math.floor(Math.random() * 100),
+    userId: userId,
+    street: street,
+    houseNum: houseNum,
+    label: label,
+    isDefault: isDefault,
+    createdTime: Date.now(),
+    modifiedDateTime: Date.now(),
+  };
+  fetch("/address/create", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(address),
+  })
+    .then((response) => response.json())
+    .then((data) => console.log(data))
+    .catch((error) => {
+      console.log(error);
+    });
+}

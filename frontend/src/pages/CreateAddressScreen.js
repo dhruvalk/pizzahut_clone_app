@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
-import { getAddressByUser, handleUpdateAddress } from "../APIUtils";
+import { handleAddAddress } from "../APIUtils";
 import { IoIosArrowBack } from "react-icons/io";
 
-const EditAddressScreen = () => {
-  const { userId, addressId } = useParams();
+export default function CreateAddressScreen() {
+  const { userId } = useParams();
   const navigate = useNavigate();
-
   // user details
   const [address, setAddress] = useState(null);
   const [street, setStreet] = useState(null);
@@ -30,37 +29,16 @@ const EditAddressScreen = () => {
 
   const handleSaveChanges = () => {
     setIsModified(false);
-    handleUpdateAddress(
-      addressId,
+    handleAddAddress(
       userId,
       street,
       houseNum,
       label,
       //TODO: add in button for default
-      false,
-      address.createdTime,
-      Date.now()
+      false
     );
     navigate("/profile");
   };
-
-  const fetchAddress = async () => {
-    const data = await getAddressByUser(userId);
-    if (data) {
-      let tempAddress = data.find(
-        (address) => address.userId == userId && address.addressId == addressId
-      );
-      setAddress(tempAddress);
-      setStreet(tempAddress.street);
-      setHouseNum(tempAddress.houseNum);
-      setLabel(tempAddress.label);
-    }
-  };
-
-  useEffect(() => {
-    fetchAddress();
-  }, []);
-
   return (
     <>
       <Link
@@ -70,7 +48,6 @@ const EditAddressScreen = () => {
         <IoIosArrowBack style={{ width: "35px", height: "35px" }} />
         <span className="hover:underline">Back</span>
       </Link>
-
       <div className="w-3/4 m-auto mt-12">
         <div className=" border-2 border-grey w-full divide-y divide-solid divide-y-2 bg-zinc-50">
           <div className="p-4 text-xl font-bold">Address details</div>
@@ -115,12 +92,11 @@ const EditAddressScreen = () => {
               className="flex justify-center w-full bg-green hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
               onClick={handleSaveChanges}
             >
-              Save Changes
+              Create Address
             </button>
           )}
         </div>
       </div>
     </>
   );
-};
-export default EditAddressScreen;
+}
