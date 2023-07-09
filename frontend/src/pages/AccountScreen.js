@@ -114,10 +114,6 @@ export default function AccountScreen() {
   };
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      navigate("/login");
-    }
     fetchUser();
     fetchAddress();
   }, []);

@@ -6,6 +6,7 @@ export default function Navbar({ isLoggedIn, setIsLoggedIn }) {
 
   const signOutHandler = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("user");
     setIsLoggedIn(false);
   };
 
