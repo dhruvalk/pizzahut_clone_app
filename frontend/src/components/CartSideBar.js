@@ -5,7 +5,7 @@ import {
   AiFillPlusCircle,
   AiFillMinusCircle,
 } from "react-icons/ai";
-import { createNewOrder } from "../APIUtils";
+import { addItemsToOrder, createNewOrder } from "../APIUtils";
 
 export default function CartSideBar({ data, setData }) {
   const [total, setTotal] = useState(0);
@@ -61,9 +61,38 @@ export default function CartSideBar({ data, setData }) {
     });
   }
 
-  function checkoutHandler() {
-    console.log(data);
-    createNewOrder(1, 1, 1, Date.now(), total, "Ordered", "Delivery");
+  async function checkoutHandler() {
+    const userData = JSON.parse(localStorage.getItem("user"));
+    if (!userData) {
+      alert("you need to login first");
+      return;
+    } else {
+      console.log(userData);
+      const response = await createNewOrder(
+        1,
+        1,
+        userData.userId,
+        Date.now(),
+        total + deliveryFee,
+        "Ordered",
+        "Delivery"
+      );
+      if (response.orderId) {
+        localStorage.removeItem("cartData");
+        const orderItemsData = [];
+        data.forEach((val) => {
+          orderItemsData.push({
+            itemId: val.itemId,
+            title: val.title,
+            orderId: response.orderId,
+            quantity: val.qty,
+            comments: "",
+            type: val.type,
+          });
+        });
+        addItemsToOrder(orderItemsData);
+      }
+    }
   }
 
   return (

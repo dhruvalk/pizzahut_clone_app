@@ -11,15 +11,21 @@ export default function OrderScreen() {
 
   useEffect(() => {
     updateMenu();
+    const cartData = localStorage.getItem("cartData");
+    if (cartData && cartData.length !== 0) setOrderData(JSON.parse(cartData));
   }, []);
+
+  useEffect(() => {
+    if (orderData.length !== 0)
+      localStorage.setItem("cartData", JSON.stringify(orderData));
+  }, [orderData]);
 
   async function updateMenu() {
     const fetchedData = await getAllMenu();
     setAllMenuData(fetchedData);
-    console.log(fetchedData);
   }
 
-  function addToOrder(title, type, price) {
+  function addToOrder(itemId, title, type, price) {
     const exists = orderData.filter(
       (val) => val.title === title && val.type === type
     );
@@ -38,7 +44,7 @@ export default function OrderScreen() {
     } else {
       setOrderData((prev) => [
         ...prev,
-        { title: title, type: type, price: price, qty: 1 },
+        { itemId: itemId, title: title, type: type, price: price, qty: 1 },
       ]);
     }
   }

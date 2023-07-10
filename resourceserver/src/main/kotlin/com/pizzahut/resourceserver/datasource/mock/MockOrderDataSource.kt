@@ -8,18 +8,10 @@ import org.springframework.stereotype.Repository
 @Repository
 class MockOrderDataSource {
     private val orderItemsList = mutableListOf<OrderItem>(
-        OrderItem(1,1,1, "no mushrooms please", Type.`Large Pan`),
-        OrderItem(2,1,2, "", Type.`Large Pan`),
-        OrderItem(3,1,1, "no milk please", Type.`Large Pan`),
-        OrderItem(3,2,1, "", Type.`Large Pan`),
-        OrderItem(3,2,1, "", Type.`Large Pan`),
-        OrderItem(3,2,1, "less spicy", Type.`Large Pan`),
-        OrderItem(3,2,1, "no egg", Type.`Large Pan`),
     )
 
     private val orderList = mutableListOf<Order>(
-        Order(1,1,1,"10-Jun-2023",23.11,"Ordered","Delivery"),
-        Order(2,1,1,"10-Jun-2023",33.11,"Ordered","Delivery")
+
     )
 
     fun getOrders(): MutableList<Order> {

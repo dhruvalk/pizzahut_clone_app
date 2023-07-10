@@ -10,7 +10,7 @@ export async function getItemPrices(id) {
   return data;
 }
 
-export function createNewOrder(
+export async function createNewOrder(
   orderId,
   addressId,
   userId,
@@ -19,7 +19,7 @@ export function createNewOrder(
   orderStatus,
   orderType
 ) {
-  fetch("/orders/create", {
+  const response = await fetch("/orders/create", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -33,16 +33,34 @@ export function createNewOrder(
       orderStatus: orderStatus,
       orderType: orderType,
     }),
+  });
+  const data = await response.json();
+  return data;
+}
+
+export function addItemsToOrder(data) {
+  fetch("/orderItems/create", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
   })
     .then((response) => response.json())
     .then((data) => console.log(data))
     .catch((error) => {
-      console.log(error);
+      throw new Error(error);
     });
 }
 
 export async function getAllUserOrders(userid) {
   const response = await fetch("/orders/" + userid + "/all");
+  const data = await response.json();
+  return data;
+}
+
+export async function getAllOrderItems(orderId) {
+  const response = await fetch("/orderItems/" + orderId + "/all");
   const data = await response.json();
   return data;
 }

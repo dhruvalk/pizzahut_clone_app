@@ -3,7 +3,7 @@ import { getItemPrices } from "../APIUtils";
 
 export default function MenuItem({ title, desc, image_url, onClick, id }) {
   function onClickHandler() {
-    onClick(title, type, price);
+    onClick(id, title, type, price);
   }
   const [type, setType] = useState("");
   const [price, setPrice] = useState(0);

@@ -123,12 +123,14 @@ class OrdersController(private val orderService: OrderService) {
     @PostMapping("/orderItems/create")
     @ResponseStatus(HttpStatus.CREATED)
     // add an item to order
-    fun addNewOrderItem(@RequestBody orderItem: OrderItem): OrderItem {
-        if(orderService.getOrderItems().any{it.itemId == orderItem.itemId && it.orderId == orderItem.orderId}){
-            throw IllegalArgumentException("Order item with itemId ${orderItem.itemId} already exists in database for this particular order, this error should be handled by the frontend as the item already exists in the order, use update to increase quantity instead")
+    fun addNewOrderItem(@RequestBody orderItems: List<OrderItem>): List<OrderItem> {
+        for (item in orderItems){
+            if(orderService.getOrderItems().any{it.itemId == item.itemId && it.orderId == item.orderId && it.type == item.type}){
+                throw IllegalArgumentException("Order item with itemId ${item.itemId} and type ${item.type} already exists in database for this particular order, this error should be handled by the frontend as the item already exists in the order, use update to increase quantity instead")
+            }
+            orderService.addOrderItem(item)
         }
-        orderService.addOrderItem(orderItem)
-        return orderItem
+       return orderItems
     }
 
     @PatchMapping("/orderItems/update")

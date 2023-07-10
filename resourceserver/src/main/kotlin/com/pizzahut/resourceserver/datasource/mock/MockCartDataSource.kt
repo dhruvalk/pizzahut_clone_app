@@ -11,16 +11,16 @@ class MockCartDataSource {
 
     private val cartList = mutableListOf<Cart>(
         Cart( 1, LocalDateTime.now(), listOf<OrderItem>(
-            OrderItem(1, 1, 1, "no mushrooms please", Type.`Large Pan`),
-            OrderItem(2, 1, 2, "", Type.`Large Pan`),
+            OrderItem(1,"Cheese pizza", 1, 1, "no mushrooms please", Type.`Large Pan`),
+            OrderItem(2,"Cheese pizza", 1, 2, "", Type.`Large Pan`),
         )),
-        Cart(2, LocalDateTime.of(2023, 6, 17, 10, 30, 0), listOf( OrderItem(3,2,1, "", Type.`Large Pan`),
-            OrderItem(6,2,1, "less spicy", Type.`Large Pan`))
+        Cart(2, LocalDateTime.of(2023, 6, 17, 10, 30, 0), listOf( OrderItem(3,"Cheese pizza",2,1, "", Type.`Large Pan`),
+            OrderItem(6,"Cheese pizza",2,1, "less spicy", Type.`Large Pan`))
     ),
-        Cart(3,LocalDateTime.of(2023, 2, 11, 8, 30, 0), listOf(OrderItem(2,1,2, "", Type.`Large Pan`),
-            OrderItem(3,1,1, "no milk please", Type.`Large Pan`),
-            OrderItem(4,2,1, "", Type.`Large Pan`),
-            OrderItem(5,2,1, "", Type.`Large Pan`),) )
+        Cart(3,LocalDateTime.of(2023, 2, 11, 8, 30, 0), listOf(OrderItem(2,"Cheese pizza",1,2, "", Type.`Large Pan`),
+            OrderItem(3,"Cheese pizza",1,1, "no milk please", Type.`Large Pan`),
+            OrderItem(4,"Cheese pizza",2,1, "", Type.`Large Pan`),
+            OrderItem(5,"Cheese pizza",2,1, "", Type.`Large Pan`),) )
     )
 
     fun getCartByUser(userId: Int): Cart {
