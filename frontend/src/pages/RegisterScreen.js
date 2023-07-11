@@ -6,6 +6,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { handleSignUp } from "../APIUtils";
 import { AiFillEyeInvisible, AiFillEye } from "react-icons/ai";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 export default function Register() {
   const [firstName, setFirstName] = useState("");
@@ -22,6 +23,8 @@ export default function Register() {
 
   const [isChecked, setIsChecked] = useState(false);
   const [isCheckedPrivacy, setIsCheckedPrivacy] = useState(false);
+  const [loading, setLoading] = useState(false);
+
   const handleCheckboxChange = (event) => {
     setIsChecked(event.target.checked);
   };
@@ -38,6 +41,7 @@ export default function Register() {
       if (!passwordMatch) {
         return;
       }
+      setLoading(true);
       const response = await handleSignUp(
         firstName,
         lastName,
@@ -47,7 +51,6 @@ export default function Register() {
         phone,
         birthday
       );
-      // console.log(response);
       if (response.status == 500) {
         setSignInError(true);
       } else {
@@ -56,6 +59,9 @@ export default function Register() {
     } catch (error) {
       console.log(error);
     }
+    setTimeout(() => {
+      setLoading(false);
+    }, 1000);
   };
 
   useEffect(() => {
@@ -67,8 +73,12 @@ export default function Register() {
   }, [pass1, pass2]);
 
   return (
-    <div className="flex flex-col items-center justify-center space-y-4 w-3/4 md:w-1/2 h-full mx-auto mt-16">
-      <div className="font-bold text-5xl text-left"> Create Account</div>
+    <div className="flex flex-col items-center justify-center space-y-4 w-3/4 md:w-1/2 h-full mx-auto mt-16 mb-24">
+      {loading && <LoadingSpinner />}
+      <div className="font-bold text-4xl md:text-5xl text-left">
+        {" "}
+        Create Account
+      </div>
       {signInError ? (
         <div className="bg-rose-300 px-6 py-2">
           This email address is already associated with an account. If this
@@ -85,7 +95,10 @@ export default function Register() {
           </Link>
         </div>
       )}
-      <form className="flex flex-col space-y-4 w-full" onSubmit={handleSubmit}>
+      <form
+        className="flex flex-col space-y-4 w-3/4 md:w-1/2"
+        onSubmit={handleSubmit}
+      >
         <input
           value={firstName}
           onChange={(e) => setFirstName(e.target.value)}

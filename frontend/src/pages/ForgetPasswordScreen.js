@@ -7,13 +7,16 @@ export default function ForgetPasswordScreen() {
     console.log(email);
   };
   return (
-    <div className="flex flex-col items-center justify-center h-full space-y-4 w-3/4 md:w-1/2 m-auto mt-16">
-      <div className="font-bold text-5xl text-left"> Reset Password</div>
-      <div className="text-left">
+    <div className="flex flex-col items-center justify-center h-full space-y-4 w-3/4 md:w-1/2 m-auto mt-16 mb-24">
+      <div className="font-bold text-4xl md:text-5xl"> Reset Password</div>
+      <div className="w-5/6 md:w-2/3">
         Please enter your email address and we will email you instructions to
         reset your password.
       </div>
-      <form className="flex flex-col space-y-4 w-full" onSubmit={handleSubmit}>
+      <form
+        className="flex flex-col space-y-4 w-3/4 md:w-1/2"
+        onSubmit={handleSubmit}
+      >
         <input
           value={email}
           onChange={(e) => setEmail(e.target.value)}
@@ -30,7 +33,7 @@ export default function ForgetPasswordScreen() {
           Reset Password
         </button>
       </form>
-      <div>
+      <div className="w-4/5 md:w-2/3">
         If you signed up using Facebook or Google, you will need to reset your
         password with that service.
       </div>

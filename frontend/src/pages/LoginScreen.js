@@ -4,6 +4,7 @@ import { FaFacebook } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { handleLogIn } from "../APIUtils";
 import { AiFillEyeInvisible, AiFillEye } from "react-icons/ai";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -11,8 +12,12 @@ export default function Login() {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [loginFail, setLoginFail] = useState(false);
   const navigate = useNavigate();
+
+  const [loading, setLoading] = useState(false);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     const { user, token } = await handleLogIn(email, pass);
     if (token) {
       localStorage.setItem("token", token);
@@ -22,11 +27,18 @@ export default function Login() {
     } else {
       setLoginFail(true);
     }
+    setTimeout(() => {
+      setLoading(false);
+    }, 1000);
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-full space-y-4 w-3/4 md:w-1/2 m-auto mt-16 ">
-      <div className="font-bold text-5xl text-left"> Welcome Back</div>
+    <div className="flex flex-col items-center justify-center h-full space-y-4 w-3/4 md:w-1/2 m-auto mt-16 mb-24">
+      {loading && <LoadingSpinner />}
+      <div className="font-bold text-4xl md:text-5xl text-left">
+        {" "}
+        Welcome Back
+      </div>
       <div className="text-left">
         Don't have an account?{" "}
         <Link to="/register" className="italic text-blue-500 underline">
@@ -41,7 +53,10 @@ export default function Login() {
       ) : (
         <></>
       )}
-      <form className="flex flex-col space-y-4 w-full" onSubmit={handleSubmit}>
+      <form
+        className="flex flex-col space-y-4 w-3/4 md:w-1/2"
+        onSubmit={handleSubmit}
+      >
         <input
           value={email}
           onChange={(e) => setEmail(e.target.value)}

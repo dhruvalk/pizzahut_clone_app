@@ -40,7 +40,7 @@ export default function CreateAddressScreen() {
     navigate("/profile");
   };
   return (
-    <>
+    <div className="mb-24">
       <Link
         to="/profile"
         className="flex flex-row text-lg mt-4 items-center px-6"
@@ -97,6 +97,6 @@ export default function CreateAddressScreen() {
           )}
         </div>
       </div>
-    </>
+    </div>
   );
 }

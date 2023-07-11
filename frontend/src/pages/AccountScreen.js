@@ -8,6 +8,9 @@ import {
   handleUpdateUser,
   deleteAddress,
 } from "../APIUtils";
+import { AiFillEdit } from "react-icons/ai";
+import { RiDeleteBin6Line } from "react-icons/ri";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 export default function AccountScreen() {
   const [user, setUser] = useState(null);
@@ -77,8 +80,11 @@ export default function AccountScreen() {
 
   const userId = getUserId();
 
+  const [loading, setLoading] = useState(false);
+
   const fetchUser = async () => {
     try {
+      setLoading(true);
       const data = await getUser(userId);
       if (data) {
         let tempUser = data;
@@ -91,6 +97,9 @@ export default function AccountScreen() {
     } catch (error) {
       console.log(error);
     }
+    setTimeout(() => {
+      setLoading(false);
+    }, 1000);
   };
 
   const fetchAddress = async () => {
@@ -119,7 +128,8 @@ export default function AccountScreen() {
   }, []);
 
   return (
-    <>
+    <div className="mb-24">
+      {loading && <LoadingSpinner />}
       <div className="w-full bg-red text-white h-1/6 justify-center text-4xl px-20 py-14 mb-16">
         Hello, {firstName}
       </div>
@@ -204,15 +214,16 @@ export default function AccountScreen() {
                   <text>{labels[index]}</text>
                 </div>
               </div>
-              <div>
+              <div className="flex flex-row gap-x-2 items-center">
                 <Link
                   to={`/editAddress/${address.userId}/${address.addressId}`}
                 >
-                  <button className="hover:underline ">Edit</button>
+                  <AiFillEdit style={{ width: "25px", height: "30px" }} />
+                  {/* <button className="hover:underline ">Edit</button> */}
                 </Link>{" "}
                 |{" "}
-                <button
-                  className="hover:underline"
+                <RiDeleteBin6Line
+                  style={{ width: "25px", height: "30px" }}
                   onClick={() =>
                     handleDeleteAddress(
                       address.addressId,
@@ -220,14 +231,12 @@ export default function AccountScreen() {
                       index
                     )
                   }
-                >
-                  Delete
-                </button>
+                />
               </div>
             </div>
           ))}
         </div>
       </div>
-    </>
+    </div>
   );
 }

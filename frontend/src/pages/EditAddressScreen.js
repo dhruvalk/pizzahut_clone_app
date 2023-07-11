@@ -62,7 +62,7 @@ const EditAddressScreen = () => {
   }, []);
 
   return (
-    <>
+    <div className="mb-24">
       <Link
         to="/profile"
         className="flex flex-row text-lg mt-4 items-center px-6"
@@ -71,7 +71,7 @@ const EditAddressScreen = () => {
         <span className="hover:underline">Back</span>
       </Link>
 
-      <div className="w-3/4 m-auto mt-12">
+      <div className="m-auto mt-12 w-5/6 md:w-2/3">
         <div className=" border-2 border-grey w-full divide-y divide-solid divide-y-2 bg-zinc-50">
           <div className="p-4 text-xl font-bold">Address details</div>
           <div className="grid gap-6 grid-cols-2 grid-rows- p-6">
@@ -120,7 +120,7 @@ const EditAddressScreen = () => {
           )}
         </div>
       </div>
-    </>
+    </div>
   );
 };
 export default EditAddressScreen;
