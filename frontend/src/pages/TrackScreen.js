@@ -1,22 +1,29 @@
 import React, { useEffect, useState } from "react";
 import { getAllOrderItems, getAllUserOrders } from "../APIUtils";
 import { AiFillClockCircle, AiFillHome } from "react-icons/ai";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 export default function TrackScreen() {
   const [ordersData, setOrdersData] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     updateOrders();
   }, []);
 
   async function updateOrders() {
+    setLoading(true);
     const userData = await JSON.parse(localStorage.getItem("user"));
     const data = await getAllUserOrders(userData.userId);
     setOrdersData(data);
+    setTimeout(() => {
+      setLoading(false);
+    }, 1000);
   }
 
   return (
     <div className="flex w-full flex-col">
+      {loading && <LoadingSpinner />}
       <h1 className="bg-red py-2 px-4 text-white font-bold text-2xl">
         All Orders
       </h1>

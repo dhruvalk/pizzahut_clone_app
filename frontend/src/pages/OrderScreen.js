@@ -4,10 +4,12 @@ import MenuItem from "../components/MenuItem";
 import MenuNavBar from "../components/MenuNavBar";
 import CartSideBar from "../components/CartSideBar";
 import { getAllMenu } from "../APIUtils";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 export default function OrderScreen() {
   const [orderData, setOrderData] = useState([]);
   const [allMenuData, setAllMenuData] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     updateMenu();
@@ -21,8 +23,12 @@ export default function OrderScreen() {
   }, [orderData]);
 
   async function updateMenu() {
+    setLoading(true);
     const fetchedData = await getAllMenu();
     setAllMenuData(fetchedData);
+    setTimeout(() => {
+      setLoading(false);
+    }, 1000);
   }
 
   function addToOrder(itemId, title, type, price) {
@@ -51,6 +57,7 @@ export default function OrderScreen() {
 
   return (
     <div className="flex w-full relative">
+      {loading && <LoadingSpinner />}
       <div className="w-3/4">
         <MenuNavBar />
         <div className="w-full flex flex-wrap justify-center">
