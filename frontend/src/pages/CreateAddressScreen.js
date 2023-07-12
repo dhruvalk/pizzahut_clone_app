@@ -7,7 +7,6 @@ export default function CreateAddressScreen() {
   const { userId } = useParams();
   const navigate = useNavigate();
   // user details
-  const [address, setAddress] = useState(null);
   const [street, setStreet] = useState(null);
   const [houseNum, setHouseNum] = useState(null);
   const [label, setLabel] = useState(null);

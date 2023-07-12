@@ -65,7 +65,7 @@ export default function Register() {
   };
 
   useEffect(() => {
-    if (pass2 == pass1) {
+    if (pass2 === pass1) {
       setPasswordMatch(true);
     } else {
       setPasswordMatch(false);

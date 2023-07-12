@@ -48,7 +48,8 @@ const EditAddressScreen = () => {
     const data = await getAddressByUser(userId);
     if (data) {
       let tempAddress = data.find(
-        (address) => address.userId == userId && address.addressId == addressId
+        (address) =>
+          address.userId === userId && address.addressId === addressId
       );
       setAddress(tempAddress);
       setStreet(tempAddress.street);

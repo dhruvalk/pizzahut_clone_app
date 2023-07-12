@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { IoHome } from "react-icons/io5";
 import { IoAddOutline } from "react-icons/io5";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
   getAddressByUser,
   getUser,
@@ -14,13 +14,12 @@ import LoadingSpinner from "../components/LoadingSpinner";
 
 export default function AccountScreen() {
   const [user, setUser] = useState(null);
-  const navigate = useNavigate();
 
   // user details
-  const [firstName, setFirstName] = useState(null);
-  const [lastName, setLastName] = useState(null);
-  const [email, setEmail] = useState(null);
-  const [contactNum, setContactNum] = useState(null);
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [contactNum, setContactNum] = useState("");
   const [isModified, setIsModified] = useState(false);
 
   // user functions
@@ -137,7 +136,7 @@ export default function AccountScreen() {
         <div className="border-2 border-grey w-full divide-y divide-solid divide-y-2 bg-zinc-50">
           <div className="p-4 text-xl font-bold">Account details</div>
           <div className="grid gap-6 grid-cols-2 grid-rows- p-6">
-            <label for="firstName" className="flex flex-col gap-2 text-lg">
+            <label className="flex flex-col gap-2 text-lg">
               First Name
               <input
                 type="text"
@@ -148,7 +147,7 @@ export default function AccountScreen() {
                 className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-500"
               ></input>
             </label>
-            <label for="lastName" className="flex flex-col gap-2 text-lg">
+            <label className="flex flex-col gap-2 text-lg">
               Last Name
               <input
                 type="text"
@@ -159,7 +158,7 @@ export default function AccountScreen() {
                 className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-500"
               ></input>
             </label>
-            <label for="email" className="flex flex-col gap-2 text-lg">
+            <label className="flex flex-col gap-2 text-lg">
               Email
               <input
                 type="text"
@@ -170,7 +169,7 @@ export default function AccountScreen() {
                 className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-500"
               ></input>
             </label>
-            <label for="phone" className="flex flex-col gap-2 text-lg">
+            <label className="flex flex-col gap-2 text-lg">
               Mobile Phone
               <input
                 type="tel"
@@ -195,7 +194,7 @@ export default function AccountScreen() {
 
         <div className="border-2 border-grey w-full divide-y divide-solid divide-y-2 bg-zinc-50">
           <div className="p-4 flex flex-row justify-between ">
-            <text className="font-bold text-xl">Addresses</text>
+            <div className="font-bold text-xl">Addresses</div>
             <Link to={`/createAddress/${userId}`}>
               <IoAddOutline style={{ width: "25px", height: "25px" }} />
             </Link>
@@ -208,10 +207,10 @@ export default function AccountScreen() {
               <div className="flex flex-row items-center justify-center">
                 <IoHome style={{ width: "25px", height: "25px" }} />
                 <div className="flex flex-col pl-4">
-                  <text className="font-bold ">
+                  <div className="font-bold ">
                     {streets[index]}, {houseNums[index]}
-                  </text>
-                  <text>{labels[index]}</text>
+                  </div>
+                  <div>{labels[index]}</div>
                 </div>
               </div>
               <div className="flex flex-row gap-x-2 items-center">
