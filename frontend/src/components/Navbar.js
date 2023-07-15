@@ -21,7 +21,7 @@ export default function Navbar({ isLoggedIn, setIsLoggedIn }) {
           src="https://static.phdvasia.com/sg1/assets/images/logos/logo_mob@x2_A.png"
           className="h-[30px] cursor-pointer"
           alt="logo"
-          onClick={() => navigate("/")}
+          onClick={() => navigate("/order")}
         />
       </span>
       <span className="flex flex-row divide-x-2">

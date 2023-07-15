@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { BsFillArrowRightCircleFill } from "react-icons/bs";
+import { Link } from "react-router-dom";
 
 export default function HomeScreen() {
   const [delivery, setDelivery] = useState(true);
@@ -43,6 +44,9 @@ export default function HomeScreen() {
               className="cursor-pointer text-green hover:text-lime-700"
               onClick={() => alert("popup to select store location")}
             />
+          </div>
+          <div className="-mt-3 text-sm underline">
+            <Link to="/order">Not now</Link>
           </div>
         </div>
       </div>

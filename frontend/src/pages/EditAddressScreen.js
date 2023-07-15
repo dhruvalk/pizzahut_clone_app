@@ -8,10 +8,10 @@ const EditAddressScreen = () => {
   const navigate = useNavigate();
 
   // user details
-  const [address, setAddress] = useState(null);
-  const [street, setStreet] = useState(null);
-  const [houseNum, setHouseNum] = useState(null);
-  const [label, setLabel] = useState(null);
+  const [address, setAddress] = useState("");
+  const [street, setStreet] = useState("");
+  const [houseNum, setHouseNum] = useState("");
+  const [label, setLabel] = useState("");
   const [isModified, setIsModified] = useState(false);
 
   // user functions
@@ -45,16 +45,20 @@ const EditAddressScreen = () => {
   };
 
   const fetchAddress = async () => {
-    const data = await getAddressByUser(userId);
-    if (data) {
-      let tempAddress = data.find(
-        (address) =>
-          address.userId === userId && address.addressId === addressId
-      );
-      setAddress(tempAddress);
-      setStreet(tempAddress.street);
-      setHouseNum(tempAddress.houseNum);
-      setLabel(tempAddress.label);
+    try {
+      const data = await getAddressByUser(userId);
+      if (data) {
+        let tempAddress = data.find(
+          (address) =>
+            address.userId === +userId && address.addressId === +addressId
+        );
+        setAddress(tempAddress);
+        setStreet(tempAddress.street);
+        setHouseNum(tempAddress.houseNum);
+        setLabel(tempAddress.label);
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 

@@ -5,7 +5,7 @@ import {
   AiFillPlusCircle,
   AiFillMinusCircle,
 } from "react-icons/ai";
-import { addItemsToOrder, createNewOrder } from "../APIUtils";
+import { addItemsToOrder, createNewOrder, getAddressByUser } from "../APIUtils";
 import { BsCheckCircleFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 
@@ -13,7 +13,13 @@ export default function CartSideBar({ data, setData }) {
   const [total, setTotal] = useState(0);
   const [deliveryFee, setDeliveryFee] = useState(5);
   const [status, setStatus] = useState("Checkout");
+  const [addresses, setAddresses] = useState([]);
+  const [selectedAddressId, setSelectedAddressId] = useState("");
   const navigate = useNavigate();
+
+  useEffect(() => {
+    fetchAddress();
+  }, []);
 
   useEffect(() => {
     const prices = data.map((val) => val.price);
@@ -75,7 +81,7 @@ export default function CartSideBar({ data, setData }) {
       setStatus("Placing order...");
       const response = await createNewOrder(
         1,
-        1,
+        selectedAddressId,
         userData.userId,
         Date.now(),
         total + deliveryFee,
@@ -106,6 +112,27 @@ export default function CartSideBar({ data, setData }) {
     }
   }
 
+  const fetchAddress = async () => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (user) {
+      const userId = user.userId;
+
+      const data = await getAddressByUser(userId);
+      if (data) {
+        const res = data.map(
+          (address) => `${address.street}, ${address.houseNum}`
+        );
+        setAddresses(res);
+        setSelectedAddressId(0);
+        console.log(addresses);
+      }
+    }
+  };
+
+  function addressChangeHandler(e) {
+    setSelectedAddressId(e.target.value);
+  }
+
   return (
     <div className="w-1/4 border border-gray-300 sticky top-0 right-0 h-screen flex flex-col p-2">
       <h1 className="text-xl font-bold w-full text-center mb-4">Cart</h1>
@@ -130,7 +157,25 @@ export default function CartSideBar({ data, setData }) {
               />
             ))}
           </div>
+
           <div className="border-t-2 border-gray-300 mt-6 gap-2 flex flex-col p-2">
+            {addresses.length !== 0 && (
+              <div className="text-sm py-2">
+                Deliver to:
+                <select
+                  name="addressOptions"
+                  value={selectedAddressId}
+                  onChange={addressChangeHandler}
+                  className="border border-gray-300 w-full py-1 rounded-md text-sm"
+                >
+                  {addresses.map((address, index) => (
+                    <option value={index} key={address}>
+                      {address}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
             <div className="flex flex-row justify-between items-center">
               <div>Subtotal</div>
               <div>{total.toFixed(2)}</div>

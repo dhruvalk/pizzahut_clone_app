@@ -13,7 +13,7 @@ export default function MenuNavBar() {
     { title: "Coupons", link: "" },
   ];
   return (
-    <div className="bg-red mb-4 flex text-white py-2">
+    <div className="bg-red mb-4 flex flex-wrap text-white py-2">
       {links.map((val) => (
         <NavLink title={val.title} key={val.title} />
       ))}

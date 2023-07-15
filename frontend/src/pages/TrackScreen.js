@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { getAllOrderItems, getAllUserOrders } from "../APIUtils";
+import {
+  getAddressByUser,
+  getAllOrderItems,
+  getAllUserOrders,
+} from "../APIUtils";
 import { AiFillClockCircle, AiFillHome } from "react-icons/ai";
 import LoadingSpinner from "../components/LoadingSpinner";
 
@@ -22,9 +26,9 @@ export default function TrackScreen() {
   }
 
   return (
-    <div className="flex w-full flex-col">
+    <div className="flex w-full flex-col mb-24">
       {loading && <LoadingSpinner />}
-      <h1 className="bg-red py-2 px-4 text-white font-bold text-2xl">
+      <h1 className="bg-red p-8 text-white font-bold text-2xl mb-8">
         All Orders
       </h1>
       {ordersData.length === 0 ? (
@@ -45,8 +49,10 @@ export default function TrackScreen() {
 function OrderItem({ data }) {
   const date = new Date(+data.orderDateTime);
   const [itemData, setItemData] = useState([]);
+  const [addresses, setAddresses] = useState([]);
   useEffect(() => {
     updateItemData();
+    fetchAddress();
   }, []);
 
   async function updateItemData() {
@@ -54,8 +60,24 @@ function OrderItem({ data }) {
     console.log(response);
     setItemData(response);
   }
+
+  const fetchAddress = async () => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (user) {
+      const userId = user.userId;
+
+      const data = await getAddressByUser(userId);
+      if (data) {
+        const res = data.map(
+          (address) => `${address.street}, ${address.houseNum}`
+        );
+        setAddresses(res);
+      }
+    }
+  };
+
   return (
-    <div className="border flex rounded-lg px-4 py-2 justify-between divide-x">
+    <div className="border flex rounded-lg px-4 py-2 justify-between divide-x w-2/5">
       <div className="flex flex-col pr-3 gap-3">
         <div className="bg-green w-fit px-4 py-1 text-xs text-white font-bold rounded-full">
           {data.orderStatus}
@@ -63,7 +85,7 @@ function OrderItem({ data }) {
         <div className="gap-1 flex flex-col">
           <div className="text-sm flex items-center gap-1">
             <AiFillHome />
-            <div>12 Marine Parade Drive, #07-11, S479238</div>
+            <div>{addresses[data.addressId]}</div>
           </div>
           <div className="text-sm flex items-center gap-1">
             <AiFillClockCircle />

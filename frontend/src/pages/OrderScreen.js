@@ -56,7 +56,7 @@ export default function OrderScreen() {
   }
 
   return (
-    <div className="flex w-full relative">
+    <div className="flex w-full relative mb-24">
       {loading && <LoadingSpinner />}
       <div className="w-3/4">
         <MenuNavBar />

@@ -65,7 +65,7 @@ export default function MenuItem({ title, desc, image_url, onClick, id }) {
           onClick={onClickHandler}
         >
           <div>Add</div>
-          <div>${price}</div>
+          <div>${price.toFixed(2)}</div>
         </button>
       </section>
     </div>

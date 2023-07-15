@@ -129,14 +129,14 @@ export default function AccountScreen() {
   return (
     <div className="mb-24">
       {loading && <LoadingSpinner />}
-      <div className="w-full bg-red text-white h-1/6 justify-center text-4xl px-20 py-14 mb-16">
+      <div className="w-full bg-red text-white h-1/6 justify-center text-2xl font-bold p-8 mb-8">
         Hello, {firstName}
       </div>
       <div className="flex flex-col items-center h-screen space-y-8 w-3/4 m-auto">
         <div className="border-2 border-grey w-full divide-y divide-solid divide-y-2 bg-zinc-50">
-          <div className="p-4 text-xl font-bold">Account details</div>
+          <div className="p-4 text-lg font-bold">Account details</div>
           <div className="grid gap-6 grid-cols-2 grid-rows- p-6">
-            <label className="flex flex-col gap-2 text-lg">
+            <label className="flex flex-col gap-2 text-base">
               First Name
               <input
                 type="text"
@@ -147,7 +147,7 @@ export default function AccountScreen() {
                 className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-500"
               ></input>
             </label>
-            <label className="flex flex-col gap-2 text-lg">
+            <label className="flex flex-col gap-2 text-base">
               Last Name
               <input
                 type="text"
@@ -158,7 +158,7 @@ export default function AccountScreen() {
                 className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-500"
               ></input>
             </label>
-            <label className="flex flex-col gap-2 text-lg">
+            <label className="flex flex-col gap-2 text-base">
               Email
               <input
                 type="text"
@@ -169,7 +169,7 @@ export default function AccountScreen() {
                 className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-500"
               ></input>
             </label>
-            <label className="flex flex-col gap-2 text-lg">
+            <label className="flex flex-col gap-2 text-base">
               Mobile Phone
               <input
                 type="tel"
@@ -194,14 +194,14 @@ export default function AccountScreen() {
 
         <div className="border-2 border-grey w-full divide-y divide-solid divide-y-2 bg-zinc-50">
           <div className="p-4 flex flex-row justify-between ">
-            <div className="font-bold text-xl">Addresses</div>
+            <div className="font-bold text-lg">Addresses</div>
             <Link to={`/createAddress/${userId}`}>
               <IoAddOutline style={{ width: "25px", height: "25px" }} />
             </Link>
           </div>
           {addresses.map((address, index) => (
             <div
-              className="w-full flex flex-row justify-between p-4 text-lg"
+              className="w-full flex flex-row justify-between p-4 text-base"
               key={index}
             >
               <div className="flex flex-row items-center justify-center">
@@ -218,7 +218,6 @@ export default function AccountScreen() {
                   to={`/editAddress/${address.userId}/${address.addressId}`}
                 >
                   <AiFillEdit style={{ width: "25px", height: "30px" }} />
-                  {/* <button className="hover:underline ">Edit</button> */}
                 </Link>{" "}
                 |{" "}
                 <RiDeleteBin6Line
