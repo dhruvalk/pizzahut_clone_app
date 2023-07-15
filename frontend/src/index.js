@@ -5,7 +5,6 @@ import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import OrderScreen from "./pages/OrderScreen";
 import Layout from "./pages/Layout";
-import HomeScreen from "./pages/HomeScreen";
 import Login from "./pages/LoginScreen";
 import Register from "./pages/RegisterScreen";
 import ForgetPasswordScreen from "./pages/ForgetPasswordScreen";
@@ -21,6 +20,8 @@ root.render(
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Layout />}>
+          <Route path="/" element={<OrderScreen />}></Route>
+          <Route index path="/order" element={<OrderScreen />}></Route>
           <Route path="/login" element={<Login />}></Route>
           <Route path="/register" element={<Register />}></Route>
           <Route

@@ -10,6 +10,7 @@ export default function OrderScreen() {
   const [orderData, setOrderData] = useState([]);
   const [allMenuData, setAllMenuData] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [selectedTab, setSelectedTab] = useState("pizza");
 
   useEffect(() => {
     updateMenu();
@@ -59,19 +60,25 @@ export default function OrderScreen() {
     <div className="flex w-full relative mb-24">
       {loading && <LoadingSpinner />}
       <div className="w-3/4">
-        <MenuNavBar />
-        <div className="w-full flex flex-wrap justify-center">
-          {allMenuData.map((val) => (
-            <MenuItem
-              title={val.title}
-              desc={val.description}
-              image_url={val.photo}
-              onClick={addToOrder}
-              key={val.itemID}
-              id={val.itemID}
-            />
-          ))}
-        </div>
+        <MenuNavBar selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
+        {selectedTab === "Pizza" ? (
+          <div className="w-full flex flex-wrap justify-center">
+            {allMenuData.map((val) => (
+              <MenuItem
+                title={val.title}
+                desc={val.description}
+                image_url={val.photo}
+                onClick={addToOrder}
+                key={val.itemID}
+                id={val.itemID}
+              />
+            ))}
+          </div>
+        ) : (
+          <div className="text-lg font-bold w-full py-4 flex justify-center items-center">
+            Stay tuned! More coming soon...
+          </div>
+        )}
       </div>
       <CartSideBar data={orderData} setData={setOrderData} />
     </div>
