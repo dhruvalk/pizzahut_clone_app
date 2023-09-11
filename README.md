@@ -1,5 +1,7 @@
 # Pizza Hut Clone Website
 
+View a [demo](https://youtu.be/Wil6btnIDe0) of all implemented features.
+
 ## Key Features
 - Revamped design
 - Planned and designed database, currently stored locally
